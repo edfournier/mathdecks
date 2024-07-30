@@ -20,6 +20,7 @@ schema.pre("save", async function(next) {
     }
 });
 
+// Hashes given password and compares to the user's password
 schema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 }
