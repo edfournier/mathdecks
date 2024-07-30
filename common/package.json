@@ -1,0 +1,19 @@
+{
+  "name": "mathdecks-common",
+  "version": "1.0.0",
+  "exports": {
+    "./error": "./lib/error.js",
+    "./logger": "./lib/logger.js"
+  },
+  "description": "Common utilities used across Mathdecks services",
+  "type": "module",
+  "license": "AGPL-version-3.0",
+  "private": true,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "dependencies": {
+    "winston": "^3.13.1"
+  }
+}

@@ -1,0 +1,33 @@
+TODO: Logging
+- Replace console.log with logger
+- Include process ID in all logs
+
+TODO: .env.example template files
+
+TODO: package.json
+- Add author, description, title
+- Remove unused properties
+- Add scripts: test, start, stop, dev (use Snapbook for PM2 and Nodemon examples)
+
+TODO: Tests
+- At least two units tests for each endpoint
+
+TODO: Ports
+- auth:      3000 
+- deck:      3001
+- game:      3002
+- event-bus: 4000 (auth will publish user-deleted event)
+
+TODO: Configure CORS properly
+
+token validation:
+try {
+    const decoded = jwt.decode(token, { complete: true })
+    // Check kid to determine key
+    console.log(decoded);
+    // Throws if invalid
+    jwt.verify(token, pair.public, { algorithm: "RS256" });
+} 
+catch (err) {
+    console.error("Invalid token:", err.message);
+}
