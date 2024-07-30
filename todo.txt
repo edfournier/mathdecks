@@ -19,15 +19,3 @@ TODO: Ports
 - event-bus: 4000 (auth will publish user-deleted event)
 
 TODO: Configure CORS properly
-
-token validation:
-try {
-    const decoded = jwt.decode(token, { complete: true })
-    // Check kid to determine key
-    console.log(decoded);
-    // Throws if invalid
-    jwt.verify(token, pair.public, { algorithm: "RS256" });
-} 
-catch (err) {
-    console.error("Invalid token:", err.message);
-}
