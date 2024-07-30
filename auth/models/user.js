@@ -1,24 +1,17 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const schema = new mongoose.Schema({
-    user: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    pass: {
-        type: String,
-        required: true,
-    }
+    username: { type: String, trim: true },
+    password: String
 });
 
-// Encrypts password when saving
-schema.pre("save", async (next) =>  {
+// Encrypts password before saving
+schema.pre("save", async function(next) {
     try {
-        if (this.isModified("pass")) {
+        if (this.isModified("password")) {
             const salt = await bcrypt.genSalt(10);
-            this.pass = await bcrypt.hash(this.pass, salt);
+            this.password = await bcrypt.hash(this.password, salt);
         }
         next();
     } 
@@ -27,10 +20,11 @@ schema.pre("save", async (next) =>  {
     }
 });
 
-schema.method.comparePass = async function(pass) {
-    return bcrypt.compare(pass, this.pass);
+schema.methods.check = function(password) {
+    return bcrypt.compareSync(password, this.password);
 }
 
+// Mongoose searches for a collection with the model's name, but plural and lowercase: "User" -> "users"
 const User = new mongoose.model("User", schema);
 
 export default User;
