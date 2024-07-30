@@ -1,35 +1,32 @@
 import express from "express";
+import jwt from "jsonwebtoken";
+import { keys } from "./keys.js";
 
 const router = express.Router();
 
-function tokenTest() {
-    const payload = {
-        username: "edfournier"
-    };
+router.post("/", (req, res) => {
+    // Compare user and hashed pass against db
+    req.body = {
+        user: "user",
+        pass: "pass"
+    }
 
-    const token = jwt.sign(payload, pair.private, {
-        expiresIn: '1h', 
-        algorithm: 'RS256',
+    // Create payload
+    const payload = {
+        user: req.body.user,
+        iss: "mathdecks-auth"
+    }
+
+    // Sign JWT
+    const token = jwt.sign(payload, keys.private, {
+        expiresIn: "4h", 
+        algorithm: "RS256",
         header: { 
-            kid: "key-id" 
+            kid: keys.kid 
         }
     });
     
-    try {
-        const decoded = jwt.decode(token, { complete: true })
-        // Check kid to determine key
-        console.log(decoded);
-        // Throws if invalid
-        jwt.verify(token, pair.public, { algorithm: "RS256" });
-    } 
-    catch (err) {
-        console.error("Invalid token:", err.message);
-    }
-}
-
-router.post("/", (req, res) => {
-    // compares username and hashed password against db
-    // if good, return JWT
+    res.status(200).json({ token });
 });
 
 export default router;

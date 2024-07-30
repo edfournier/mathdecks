@@ -2,7 +2,7 @@ import express from "express";
 import fs from "fs/promises";
 import crypto from "crypto";
 
-const keys = {};
+export const keys = {};
 const router = express.Router();
 
 try {
