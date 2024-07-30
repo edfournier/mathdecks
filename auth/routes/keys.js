@@ -1,5 +1,5 @@
 import express from "express";
-import keys from "../utils/key-pair.js";
+import keys from "../utils/key-loader.js";
 
 const router = express.Router();
 

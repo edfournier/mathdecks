@@ -1,11 +1,12 @@
 import express from "express";
 import User from "../models/user.js";
-import jwt from "jsonwebtoken";
-import keys from "../utils/key-pair.js";
+import { checkCredentials } from "../middleware/validators.js";
+import { withAuth } from "../middleware/auth.js";
+import { handleValidationErrors } from "mathdecks-common/error";
 
 const router = express.Router();
 
-router.post("/", async (req, res, next) => {
+router.post("/", checkCredentials, handleValidationErrors, async (req, res, next) => {
     try {
         // Check for duplicate
         if (await User.findOne({ username: req.body.username })) {
@@ -23,20 +24,13 @@ router.post("/", async (req, res, next) => {
     }
 });
 
-async function withAuth(req, res, next) {
-    try {
-        // TODO: check kid const decoded = jwt.decode(token, { complete: true })
-        req.claims = jwt.verify(req.body.token, keys.public, { algorithm: "RS256" });
-        next();
-    }
-    catch (err) {
-        res.status(403).json({ error: "Invalid token" });
-    }
-}
-
 router.delete("/:username", withAuth, async (req, res, next) => {
     try {
-        const result = await User.deleteOne({ username: req.claims.username });
+        if (req.user.username !== req.params.username) {
+            return res.status(403).json({ error: "User lacks access" });
+        }
+        // Check logged in user has access
+        const result = await User.deleteOne({ username: req.user.username });
         if (result.deletedCount === 0) {
             return res.sendStatus(404);
         }
