@@ -1,12 +1,14 @@
 <script>
 	import katex from "katex";
-	export let math;
-	export let displayMode = false;
+	export let text;
+
+    // Matches KaTeX between '$$'
+    const regex = /\$\$(.*?)\$\$/g;
 </script>
 
-{@html 
-    katex.renderToString(math, {
-        displayMode: displayMode,
-        throwOnError: false
+{@html text.replace(regex, (match, math) => 
+    katex.renderToString(math, { 
+        throwOnError: false, 
+        displayMode: false 
     })
-}
+)}

@@ -1,0 +1,1 @@
+// Store contains array [{ id, name, cards }, ... ]
