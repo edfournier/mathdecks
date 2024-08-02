@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import keys from "../utils/key-loader.js";
 import { checkCredentials } from "../middleware/validators.js";
-import { handleValidationErrors } from "mathdecks-common/error";
+import { handleValidationError } from "mathdecks-common/error";
 
 const router = express.Router();
 
-router.post("/", checkCredentials, handleValidationErrors, async (req, res, next) => {
+router.post("/", checkCredentials, handleValidationError, async (req, res, next) => {
     try {
         // Fetch and verify user
         const user = await User.findOne({ username: req.body.username });

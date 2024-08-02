@@ -2,11 +2,11 @@ import express from "express";
 import User from "../models/user.js";
 import { checkCredentials } from "../middleware/validators.js";
 import { withAuth } from "../middleware/auth.js";
-import { handleValidationErrors } from "mathdecks-common/error";
+import { handleValidationError } from "mathdecks-common/error";
 
 const router = express.Router();
 
-router.post("/", checkCredentials, handleValidationErrors, async (req, res, next) => {
+router.post("/", checkCredentials, handleValidationError, async (req, res, next) => {
     try {
         // Check for duplicate
         if (await User.findOne({ username: req.body.username })) {
