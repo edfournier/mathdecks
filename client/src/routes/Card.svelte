@@ -1,5 +1,7 @@
 <script>
+	import Katex from "./Katex.svelte";
     export let card;
+
     let flipped = false;
   
     function flip() {
@@ -13,23 +15,22 @@
     }
 </script>
 
-<div class="card {flipped ? "flipped" : ""}" role="button" tabindex="0" on:keydown={handleKeydown} on:click={flip}>
+<div class="card-container {flipped ? "flipped" : ""}" role="button" tabindex="0" on:keydown={handleKeydown} on:click={flip}>
     <div class="card-content front">
-        {card.front}
+        <Katex text={card.front} />
     </div>
     <div class="card-content back">
-        {card.back}
+        <Katex text={card.back} />
     </div>
 </div>
   
 <style>
-    .card {
+    .card-container {
         width: 800px;
         height: 400px;
         border-radius: 8px;
         transition: 0.5s;
         transform-style: preserve-3d;
-        position: relative;
     }
 
     .card-content {
@@ -37,14 +38,18 @@
         height: 100%;
         border-radius: 8px;
         position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         backface-visibility: hidden;
+        display: flex;
+        align-items: center;    
+        justify-content: center; 
     }
   
-    .card.flipped {
+    .card-container.flipped {
         transform: rotateY(180deg);
+    }
+
+    .card-container:focus {
+        outline: none;
     }
   
     .front {
@@ -54,7 +59,7 @@
   
     .back {
         background: rgba(240, 250, 255, 0.8);
-        transform: rotateY(180deg);
         border: 1px solid #a0c4ff; 
+        transform: rotateY(180deg);
     }
 </style>

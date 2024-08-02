@@ -6,22 +6,22 @@
     let slide = "";
     let index = 0;
 
-    // Renders next card in deck
+    // Renders next card
     function next() {
         slide = "next";
         index = (index + 1 + cards.length) % cards.length;
-        setTimeout(() => slide = "", 300); 
+        setTimeout(() => slide = "", 200); 
     }
 
-    // Renders previous card in deck
+    // Renders previous card 
     function back() {
         slide = "back";
         index = (index - 1 + cards.length) % cards.length;
-        setTimeout(() => slide = "", 300); 
+        setTimeout(() => slide = "", 200); 
     }
 </script>
 
-<div class="container">
+<div class="viewer-container">
     <h1>{name}</h1>
     <div class="card-container {slide}">
         <Card card={cards[index]} />
@@ -34,7 +34,7 @@
 </div>
 
 <style>
-.container {
+    .viewer-container {
         margin: 20px auto;
         text-align: center;
         overflow: hidden;
@@ -53,15 +53,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
     }
 
     .next {
-        transform: translateX(30%);
+        transform: translateX(10%);
     }
 
     .back {
-        transform: translateX(-30%);
+        transform: translateX(-10%);
     }
 
     .nav {
