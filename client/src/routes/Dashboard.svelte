@@ -1,5 +1,5 @@
 <script>
-    import { scale } from "svelte/transition";
+    import { fly } from "svelte/transition";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
     import store from "./store.js";
@@ -18,12 +18,14 @@
         view = newView;
         props = newProps;
         // Wait for animation to end
-        setTimeout(async () => changing = false, 100);  
+        setTimeout(async () => changing = false, 150);  
     }
+
+    // TODO: display number of cards and date last updated alongside deck name
 </script>
 
 {#if !view && !changing}
-    <ul>
+    <ul transition:fly={{ x: -100, duration: 150 }}>
         {#each Object.values(decks) as deck}
             <li>{deck.name}</li>
             <button on:click={() => changeView(DeckViewer, { deck })}>View</button>
@@ -32,7 +34,7 @@
     </ul>
 {:else if !changing}
     <button on:click={() => changeView(null, {})}>Back</button>
-    <div in:scale={{ start: 1.2, duration: 100 }} out:scale={{ start: 0.5, duration: 100 }}>
+    <div transition:fly={{ x: 500, duration: 150 }}>
         <svelte:component this={view} {...props} />
     </div>
 {/if}

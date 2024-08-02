@@ -4,14 +4,12 @@
 
     let status = "";
 
+    // TODO: auto-save/save-before-exit toggle, requires local storage
+
     // Clone otherwise card.front/card.back changes would percolate before saving
     deck = structuredClone(deck);
 
-    function setUnsaved() {
-        status = "*Unsaved changes";
-    }
-
-    function save() {
+    async function save() {
         if (status !== "*Unsaved changes") {
             status = "No changes to save...";
         }
@@ -29,17 +27,17 @@
 
     function add() {
         deck.cards = [...deck.cards, { front: "", back: "" }];
-        setUnsaved();
+        status = "*Unsaved changes";
     }
 
     function remove(target) {
         deck.cards = deck.cards.filter(card => card !== target);
-        setUnsaved();
+        status = "*Unsaved changes";
     }
 </script>
 
 <div class="container">
-    <input class="deck-name" type="text" bind:value={deck.name} on:input={setUnsaved} placeholder="Enter a deck name">
+    <input class="deck-name" type="text" bind:value={deck.name} on:input={() => status = "*Unsaved changes"} placeholder="Enter a deck name">
     {status}
     <table>
         <thead>
@@ -53,12 +51,12 @@
                 <tr>
                     <td>
                         <div class="textarea-container">
-                            <textarea bind:value={card.front} on:input={setUnsaved}/>
+                            <textarea bind:value={card.front} on:input={() => status = "*Unsaved changes"}/>
                         </div>
                     </td>
                     <td>
                         <div class="textarea-container">
-                            <textarea bind:value={card.back} on:input={setUnsaved}/>
+                            <textarea bind:value={card.back} on:input={() => status = "*Unsaved changes"}/>
                             <button class="delete-button" on:click={() => remove(card)}>✖</button>
                         </div>
                     </td>
