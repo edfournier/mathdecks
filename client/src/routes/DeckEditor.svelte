@@ -1,44 +1,56 @@
 <script>
+	import { onDestroy } from "svelte";
     import store from "./store";
     export let deck;
 
-    let status = "";
-
-    // TODO: auto-save/save-before-exit toggle, requires local storage
+    // Attempt auto-save every 10 seconds
+    const autoSaver = setInterval(save, 10000);
+    let changed = false;
+    let timestamp = "";
 
     // Clone otherwise card.front/card.back changes would percolate before saving
     deck = structuredClone(deck);
 
     async function save() {
-        if (status !== "*Unsaved changes") {
-            status = "No changes to save...";
-        }
-        else {
+        if (changed) {
             // TODO: backend call
             store.update(decks => {
             decks[deck.id] = deck;
                 return decks;
             });
-            status = "Changes saved 🗸";
+            changed = false;
         }
-        // Clear status in 8 seconds
-        setTimeout(() => status = "", 8000);
+        // Timestamp last save
+        const time = new Intl.DateTimeFormat("default", {
+            hour12: true,
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+        }).format(new Date());
+        timestamp = `Last saved at: ${time}`;
     }
 
     function add() {
         deck.cards = [...deck.cards, { front: "", back: "" }];
-        status = "*Unsaved changes";
+        changed = true;
     }
 
     function remove(target) {
         deck.cards = deck.cards.filter(card => card !== target);
-        status = "*Unsaved changes";
+        changed = true;
     }
+
+    onDestroy(async () => {
+        await save();
+        clearInterval(autoSaver);
+    });
+
+    // TODO: auto-save toggle, use local storage?
 </script>
 
 <div class="container">
-    <input class="deck-name" type="text" bind:value={deck.name} on:input={() => status = "*Unsaved changes"} placeholder="Enter a deck name">
-    {status}
+    <input class="deck-name" type="text" bind:value={deck.name} on:input={() => changed = true} placeholder="Enter a deck name" />
+    {timestamp}
     <table>
         <thead>
             <tr>
@@ -51,12 +63,12 @@
                 <tr>
                     <td>
                         <div class="textarea-container">
-                            <textarea bind:value={card.front} on:input={() => status = "*Unsaved changes"}/>
+                            <textarea bind:value={card.front} on:input={() => changed = true}/>
                         </div>
                     </td>
                     <td>
                         <div class="textarea-container">
-                            <textarea bind:value={card.back} on:input={() => status = "*Unsaved changes"}/>
+                            <textarea bind:value={card.back} on:input={() => changed = true}/>
                             <button class="delete-button" on:click={() => remove(card)}>✖</button>
                         </div>
                     </td>
