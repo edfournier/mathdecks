@@ -2,7 +2,7 @@
     import { fly } from "svelte/transition";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
-    import store from "./store.js";
+    import store from "$lib/deckStore.js";
 
     let view = null;
     let decks = [];

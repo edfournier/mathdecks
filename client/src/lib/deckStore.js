@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable } from "svelte/store";
 
 // Maps id to { id: string, name: string, cards: [{ front: string, back: string }, ...] }
 export const store = writable({

@@ -1,6 +1,6 @@
 <script>
 	import { onDestroy } from "svelte";
-    import store from "./store";
+    import store from "$lib/deckStore.js";
     export let deck;
 
     // Attempt auto-save every 10 seconds
