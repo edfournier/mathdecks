@@ -102,7 +102,7 @@
     input {
         padding: 6px;
         margin-bottom: 15px;
-        border: none;
+        border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 20px;
         font-family: inherit;

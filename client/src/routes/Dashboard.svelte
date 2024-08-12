@@ -2,37 +2,58 @@
     import { fly } from "svelte/transition";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
-    import store from "$lib/deckStore.js";
+    import deckStore from "$lib/deckStore.js";
 
-    let view = null;
     let changing = false;
+    let view = null;
+    let activeDeck = {};
     let decks = [];
-    let props = {};
 
-    store.subscribe(newDecks => {
+    deckStore.subscribe(newDecks => {
         decks = newDecks;
     });
 
-    async function changeView(newView, newProps) {
-        if (view !== newView) {
+    async function changeView(newView, newDeck) {
+        if (!changing && !(view === newView && activeDeck.name === newDeck.name)) {
             changing = true;
             view = newView;
-            props = newProps;
+            activeDeck = newDeck;
             // Wait for animation to end
             setTimeout(() => changing = false, 260);
         }
     }
 </script>
 
-<ul>
-    {#each Object.values(decks) as deck}
-        <li>{deck.name}</li>
-        <button on:click={() => changeView(DeckViewer, { deck })}>View</button>
-        <button on:click={() => changeView(DeckEditor, { deck })}>Edit</button>
-    {/each}
-</ul>
-{#if !changing}
-    <div transition:fly={{ x: 500, duration: 250 }} key={view}>
-        <svelte:component this={view} {...props} key={view}/>
-    </div>                                                                          
-{/if}
+<div class="container">
+    <ul>
+        {#each Object.values(decks) as deck}
+            <li class={activeDeck.name === deck.name ? "active-deck" : ""}>
+                <button on:click={() => changeView(DeckViewer, deck)}>{deck.name}</button>
+                <button on:click={() => changeView(DeckEditor, deck)}>✎</button>
+            </li>
+        {/each}
+    </ul>
+    {#if !changing}
+        <div class="view" transition:fly={{ x: 500, duration: 250 }}>
+            <svelte:component this={view} deck={activeDeck}/>
+        </div>                                                                          
+    {/if}
+</div>
+
+<style>
+    .active-deck {
+        background: lightblue;
+    }
+
+    .container {
+        display: flex;
+    }
+
+    li {
+        margin-bottom: 10px; 
+    }
+
+    .view {
+        flex: 1;
+    }
+</style>
