@@ -1,6 +1,6 @@
 <script>
 	import { onDestroy } from "svelte";
-    import store from "$lib/deckStore.js";
+    import deckStore from "$lib/deckStore.js";
     export let deck;
 
     // Attempt auto-save every 10 seconds
@@ -14,7 +14,7 @@
     async function save() {
         if (changed) {
             // TODO: backend call
-            store.update(decks => {
+            deckStore.update(decks => {
             decks[deck.id] = deck;
                 return decks;
             });

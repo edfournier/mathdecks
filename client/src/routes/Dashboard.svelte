@@ -5,36 +5,41 @@
     import store from "$lib/deckStore.js";
 
     let view = null;
+    let changing = false;
     let decks = [];
     let props = {};
-    let changing = false;
 
     store.subscribe(newDecks => {
         decks = newDecks;
     });
 
     async function changeView(newView, newProps) {
-        changing = true;  
-        view = newView;
-        props = newProps;
-        // Wait for animation to end
-        setTimeout(async () => changing = false, 150);  
+        if (view != newView) {
+            changing = true;  
+            view = newView;
+            props = newProps;
+            // Wait for animation to end
+            setTimeout(async () => changing = false, 250);  
+        }
     }
 
     // TODO: display number of cards and date last updated alongside deck name
+    // <svelte:component this={view} {...props} />
 </script>
 
-{#if !view && !changing}
-    <ul transition:fly={{ x: -100, duration: 150 }}>
-        {#each Object.values(decks) as deck}
-            <li>{deck.name}</li>
-            <button on:click={() => changeView(DeckViewer, { deck })}>View</button>
-            <button on:click={() => changeView(DeckEditor, { deck })}>Edit</button>
-        {/each}
-    </ul>
-{:else if !changing}
-    <button on:click={() => changeView(null, {})}>Back</button>
-    <div transition:fly={{ x: 500, duration: 150 }}>
-        <svelte:component this={view} {...props} />
+<ul>
+    {#each Object.values(decks) as deck}
+        <li>{deck.name}</li>
+        <button on:click={() => changeView("viewer", { deck })}>View</button>
+        <button on:click={() => changeView("editor", { deck })}>Edit</button>
+    {/each}
+</ul>
+{#if !changing && view === "editor"}
+    <div transition:fly={{ x: 500, duration: 250 }}>
+        <DeckEditor deck={props.deck} />
+    </div>
+{:else if !changing && view === "viewer"} 
+    <div transition:fly={{ x: 500, duration: 250 }}>
+        <DeckViewer deck={props.deck} />
     </div>
 {/if}
