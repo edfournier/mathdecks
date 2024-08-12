@@ -14,32 +14,25 @@
     });
 
     async function changeView(newView, newProps) {
-        if (view != newView) {
-            changing = true;  
+        if (view !== newView) {
+            changing = true;
             view = newView;
             props = newProps;
             // Wait for animation to end
-            setTimeout(async () => changing = false, 250);  
+            setTimeout(() => changing = false, 260);
         }
     }
-
-    // TODO: display number of cards and date last updated alongside deck name
-    // <svelte:component this={view} {...props} />
 </script>
 
 <ul>
     {#each Object.values(decks) as deck}
         <li>{deck.name}</li>
-        <button on:click={() => changeView("viewer", { deck })}>View</button>
-        <button on:click={() => changeView("editor", { deck })}>Edit</button>
+        <button on:click={() => changeView(DeckViewer, { deck })}>View</button>
+        <button on:click={() => changeView(DeckEditor, { deck })}>Edit</button>
     {/each}
 </ul>
-{#if !changing && view === "editor"}
-    <div transition:fly={{ x: 500, duration: 250 }}>
-        <DeckEditor deck={props.deck} />
-    </div>
-{:else if !changing && view === "viewer"} 
-    <div transition:fly={{ x: 500, duration: 250 }}>
-        <DeckViewer deck={props.deck} />
-    </div>
+{#if !changing}
+    <div transition:fly={{ x: 500, duration: 250 }} key={view}>
+        <svelte:component this={view} {...props} key={view}/>
+    </div>                                                                          
 {/if}
