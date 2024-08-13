@@ -34,7 +34,7 @@ router.get("/:id", withAuth, async (req, res, next) => {
 
 router.post("/", withAuth, async (req, res, next) => {
     try {
-        // Save given deck under user's ID
+        // Save given deck under user
         const deck = new Deck({ 
             userId: req.user.id,
             ...req.body
@@ -67,7 +67,7 @@ router.put("/:id", withAuth, async (req, res, next) => {
 
 router.delete("/:id", withAuth, async (req, res, next) => {
     try {
-        // Delete deck with given ID
+        // Find and delete deck belonging to user
         const result = await Deck.deleteOne({ 
             _id: req.params.id,
             userId: req.user.id
