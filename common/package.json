@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "exports": {
     "./error": "./lib/error.js",
-    "./logger": "./lib/logger.js"
+    "./logger": "./lib/logger.js",
+    "./auth": "./lib/auth.js"
   },
   "description": "Common utilities used across Mathdecks services",
   "type": "module",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
     "winston": "^3.13.1"
   }
 }

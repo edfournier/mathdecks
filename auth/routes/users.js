@@ -17,7 +17,7 @@ router.post("/", checkCredentials, handleValidationError, async (req, res, next)
             password: req.body.password
         });
         await user.save();
-        res.status(200).json({ username: user.username });
+        res.status(200).json({ id: user._id, username: user.username });
     }
     catch (err) {
         next(err);
@@ -26,10 +26,10 @@ router.post("/", checkCredentials, handleValidationError, async (req, res, next)
 
 router.delete("/:username", withAuth, async (req, res, next) => {
     try {
+        // Check username matches route
         if (req.user.username !== req.params.username) {
             return res.status(403).json({ error: "User lacks access" });
         }
-        // Check logged in user has access
         const result = await User.deleteOne({ username: req.user.username });
         if (result.deletedCount === 0) {
             return res.sendStatus(404);

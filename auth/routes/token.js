@@ -20,6 +20,7 @@ router.post("/", checkCredentials, handleValidationError, async (req, res, next)
     
         // Construct and sign new JWT
         const payload = { 
+            id: user.id,
             username: user.username, 
             iss: "mathdecks-auth" 
         };

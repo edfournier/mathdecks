@@ -19,3 +19,7 @@ TODO: Ports
 - event-bus: 4000 (auth will publish user-deleted event)
 
 TODO: Configure CORS properly
+
+TODO: Docker Compose to share environment variables (like service URLs) between services
+
+TODO: Database service with a dockerfile that launches a database server running a MongoDB cluster

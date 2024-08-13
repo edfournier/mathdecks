@@ -7,13 +7,25 @@ import jwt from "jsonwebtoken";
  */
 export function withAuth(req, res, next) {
     try {
-        if (!req.body.token) {
-            return res.status(401).json({ error: "Token required" });
+        // Parse token from header
+        if (!req.headers.authorization) {
+            return res.status(401).json({ error: "Authorization header missing" });
         }
-        req.user = jwt.verify(req.body.token, keys.public, {  algorithm: "RS256" });
-        next();
+        const token = req.headers.authorization.split(" ")[1];
+        if (!token) {
+            return res.status(401).json({ error: "Bearer token missing" });
+        }
+
+        // Verify token
+        try {
+            req.user = jwt.verify(token, keys.public, { algorithm: "RS256" });
+        }
+        catch {
+            return res.status(401).json({ error: "Invalid token" });
+        }
+        next(); 
     }
     catch (err) {
-        res.status(403).json({ error: "Invalid token" });
+        next(err);
     }
 }
