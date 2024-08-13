@@ -2,8 +2,7 @@ import keys from "../utils/key-loader.js";
 import jwt from "jsonwebtoken";
 
 /**
- * Verifies JWT defined on req.body.token and sets req.user to the payload if valid
- * TODO: check kid const decoded = jwt.decode(token, { complete: true })
+ * Verifies JWT defined on header and sets req.user to its payload if valid
  */
 export function withAuth(req, res, next) {
     try {

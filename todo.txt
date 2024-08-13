@@ -9,8 +9,7 @@ TODO: package.json
 - Remove unused properties
 - Add scripts: test, start, stop, dev (use Snapbook for PM2 and Nodemon examples)
 
-TODO: Tests
-- At least two units tests for each endpoint
+TODO: Two units tests per endpoint
 
 TODO: Ports
 - auth:      3000 
@@ -22,4 +21,16 @@ TODO: Configure CORS properly
 
 TODO: Docker Compose to share environment variables (like service URLs) between services
 
-TODO: Database service with a dockerfile that launches a database server running a MongoDB cluster
+TODO: Database service with a dockerfile that launches a database server running a MongoDB cluster with desired databases
+
+TODO: Share route in deck service
+- Share route to add
+    - Sharer POSTS username to add 
+    - Look up username to get ID
+    - Add userId to shared list
+- Share route to GET
+    - Looks up doc
+    - Checks if user id is on share list
+    - Returns deck if it is
+
+- TODO: Option to make deck public
