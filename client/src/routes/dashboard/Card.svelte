@@ -53,7 +53,7 @@
     }
   
     .front {
-        background: rgba(255, 255, 255, 0.8); 
+        background: white; 
         border: 1px solid #a0c4ff; 
     }
   

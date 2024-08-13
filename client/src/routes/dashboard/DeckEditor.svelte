@@ -150,7 +150,7 @@
         min-width: 65px;
         background-color: #4b647a;
         font-size: 16px;
-        color: #ffffff;
+        color: white;
     }
 
     .delete-button {
