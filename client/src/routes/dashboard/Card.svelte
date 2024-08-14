@@ -7,15 +7,9 @@
     function flip() {
         flipped = !flipped;
     }
-
-    function handleKeydown(e) {
-        if (e.key === "Enter") {
-            flip();
-        }
-    }
 </script>
 
-<div class="card-container {flipped ? "flipped" : ""}" role="button" tabindex="0" on:keydown={handleKeydown} on:click={flip}>
+<div class="card {flipped ? "flipped" : ""}" role="button" tabindex="0" on:keydown={flip} on:click={flip}>
     <div class="card-content front">
         <Katex text={card.front} />
     </div>
@@ -25,7 +19,7 @@
 </div>
   
 <style>
-    .card-container {
+    .card {
         width: 800px;
         height: 400px;
         border-radius: 8px;
@@ -44,11 +38,11 @@
         justify-content: center; 
     }
   
-    .card-container.flipped {
+    .card.flipped {
         transform: rotateY(180deg);
     }
 
-    .card-container:focus {
+    .card:focus {
         outline: none;
     }
   

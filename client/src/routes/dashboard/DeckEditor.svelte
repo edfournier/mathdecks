@@ -3,19 +3,19 @@
     import deckStore from "$lib/deckStore.js";
     export let deck;
 
+    // Clone otherwise card.front/card.back changes would percolate before saving
+    deck = structuredClone(deck);
+
     // Attempt auto-save every 10 seconds
     const autoSaver = setInterval(save, 10000);
     let changed = false;
     let timestamp = "";
 
-    // Clone otherwise card.front/card.back changes would percolate before saving
-    deck = structuredClone(deck);
-
     async function save() {
         if (changed) {
             // TODO: backend call
             deckStore.update(decks => {
-            decks[deck.id] = deck;
+                decks[deck.id] = deck;
                 return decks;
             });
             changed = false;
@@ -46,118 +46,120 @@
     });
 </script>
 
-<div class="container">
-    <input class="deck-name" type="text" bind:value={deck.name} on:input={() => changed = true} placeholder="Enter a deck name" />
+<div class="editor">
+    <input type="text" bind:value={deck.name} on:input={() => changed = true} placeholder="Deck name" />
     {timestamp}
     <table>
         <thead>
             <tr>
                 <th>Front</th>
                 <th>Back</th>
+                <th class="delete-cell"></th>
             </tr>
         </thead>
         <tbody>
             {#each deck.cards as card}
                 <tr>
                     <td>
-                        <div class="textarea-container">
-                            <textarea bind:value={card.front} on:input={() => changed = true}/>
-                        </div>
+                        <textarea bind:value={card.front} on:input={() => changed = true}/>
                     </td>
                     <td>
-                        <div class="textarea-container">
-                            <textarea bind:value={card.back} on:input={() => changed = true}/>
-                            <button class="delete-button" on:click={() => remove(card)}>✖</button>
-                        </div>
+                        <textarea bind:value={card.back} on:input={() => changed = true}/>
+                    </td>
+                    <td class="delete-cell">
+                        <div class="delete-button" role="button" tabindex="0" on:keydown={() => remove(card)} on:click={() => remove(card)}>✖</div>
                     </td>
                 </tr>
             {/each}
         </tbody>
     </table>
-    <button class="add-button" on:click={add}>Add</button>
-    <button class="save-button" on:click={save}>Save</button>
+    <button on:click={add}>Add</button>
+    <button on:click={save}>Save</button>
 </div>
 
 <style>
-    .deck-name {
-        text-align: center;
-    }
-
-    .container {
-        max-width: 1500px;
+    .editor {
+        width: 90%;
         margin: 20px auto;
         padding: 20px;
-        border: 1px solid #a0c4ff; 
-        background: white;
+        border: 1px solid #a0c4ff;
         border-radius: 8px;
-    }
-
-    .textarea-container {
-        display: flex;
-        align-items: center;
+        background: white;
     }
 
     input {
+        font-family: inherit;
+        font-size: 20px;
         padding: 6px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 20px;
-        font-family: inherit;
+        text-align: center;
     }
 
     textarea {
+        font-family: inherit;
+        font-size: 14px;
+        width: 95%;
+        height: 180px;
         padding: 12px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 14px;
-        font-family: inherit;
-        height: 120px;
         resize: vertical;
-        flex: 1;
     }
 
     table {
         width: 100%;
-        border-collapse: collapse;
-        border: 1px solid #ddd;
         margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-collapse: collapse;
+        background-color: #f4f4f4;
     }
 
-    th, td {
-        background-color: #f4f4f4;
+    th {
         color: #333;
-        border: none;
-        padding: 12px;
+        padding-right: 0px;
+        padding-top: 25px;
+        padding-bottom: 10px;
         text-align: center;
     }
-    
+
+    td {
+        color: #333;
+        padding-left: 20px;
+        padding-right: 0px;
+        padding-bottom: 20px;
+        text-align: center;
+    }
+
+    .delete-cell {
+        width: 50px;
+        margin: 0px;
+        padding: 0px;
+    }
+
     button {
-        cursor: pointer;
-        padding: 10px;
         font: inherit;
+        min-width: 65px;
+        padding: 10px;
         border: none;
         border-radius: 4px;
+        background-color: #4b647a;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #8393a1;
     }
 
     button:active {
         transform: scale(0.9);
     }
 
-    .save-button, .add-button {
-        min-width: 65px;
-        background-color: #4b647a;
-        font-size: 16px;
-        color: white;
-    }
-
     .delete-button {
-        background-color: none;
         font-size: 20px;
-        margin-left: 8px; 
-    }
-
-    .save-button:hover, .add-button:hover {
-        background-color: #8393a1;
+        margin-bottom: 20px;
+        cursor: pointer;
     }
 </style>

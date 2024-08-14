@@ -28,17 +28,13 @@
     <div class="deck-list">
         <ul>
             {#each Object.values(decks) as deck}
-                <div
-                    class={"deck-item " + (activeDeck.name === deck.name ? "active-deck" : "")}
+                <button 
+                    class={`deck-item ${activeDeck.name === deck.name ? "active-deck" : ""}`}
                     on:click={() => changeView(DeckViewer, deck)} 
-                    on:keydown={() => changeView(DeckViewer, deck)}
-                    aria-label="deck" 
-                    role="button"
-                    tabindex="0" 
                 >
-                    <span class="deck-name">{deck.name}</span>
+                    {deck.name}
                     <button class="edit-button" on:click|stopPropagation={() => changeView(DeckEditor, deck)}>✎</button>
-                </div>
+                </button>
             {/each}
         </ul>
     </div>
@@ -54,43 +50,36 @@
         display: flex;
         width: 100%;
         height: 100vh;
-        overflow: hidden;
     }
 
     .deck-list {
-        flex: 0 0 250px;
+        width: 300px;
         background-color: #f5f5f5;
-        border-right: 1px solid #ddd;
         padding: 10px;
-        overflow-y: auto;
     }
 
     ul {
-        list-style: none;
         padding: 0;
         margin: 0;
     }
 
     .deck-item {
+        all: unset;
         cursor: pointer;
+        width: 95%;
+        height: 25px;
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-size: 14px;
         margin-bottom: 5px;
         padding: 5px;
         border-radius: 4px;
-        background: white;
         border: 1px solid #d3d3d3;
-        font-size: 14px;
-        position: relative;
-        height: 25px;
+        background: white;
     }
-
-    .deck-name {
-        flex: 1;
-        cursor: pointer;
-    }
-
+    
     .active-deck {
         background: lightblue;
     }
@@ -100,7 +89,7 @@
         padding: 10px;
     }
 
-    button {
+    .edit-button {
         background-color: #4b647a;
         border: none;
         border-radius: 4px;
@@ -112,11 +101,11 @@
         right: 10px;
     }
 
-    button:hover {
+    .edit-button:hover {
         background-color: #8393a1;
     }
 
-    button:active {
+    .edit-button:active {
         transform: scale(0.9);
     }
 </style>
