@@ -45,13 +45,15 @@
 
 <style>
     .login-container {
-        margin: 20px auto;
+        margin: auto;
         max-width: 400px;
         text-align: center;
         padding: 20px;
         border-radius: 8px;
         background: white; 
         border: 1px solid #a0c4ff; 
+        position: relative;
+        top: 50px;
     }
 
     h1 {

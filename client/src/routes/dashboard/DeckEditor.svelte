@@ -44,8 +44,6 @@
         await save();
         clearInterval(autoSaver);
     });
-
-    // TODO: auto-save toggle, use local storage?
 </script>
 
 <div class="container">
