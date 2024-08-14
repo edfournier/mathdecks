@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-// Array of decks
-export const store = writable([]);
+// Stores the array of decks
+export const deckStore = writable([]);
 
-export default store;
+export default deckStore;

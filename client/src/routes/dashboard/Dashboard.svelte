@@ -9,6 +9,7 @@
     let changing = false;
 
     deckStore.subscribe(newDecks => decks = newDecks);
+
     viewStore.subscribe(newView => {
         if (!changing && !(view.component === newView.component && view.deck.id === newView.deck.id)) {
             view = newView;

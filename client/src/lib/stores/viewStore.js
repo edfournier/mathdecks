@@ -1,9 +1,15 @@
 import { writable } from "svelte/store";
 
-// Stores the current dashboard view and active deck
-export const store = writable({
+const init = {
     component: null,
     deck: {}
-});
+}
 
-export default store;
+// Stores the current dashboard view and active deck
+export const viewStore = writable(init);
+
+viewStore.reset = () => {
+    viewStore.set(init);
+}
+
+export default viewStore;

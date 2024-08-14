@@ -1,6 +1,7 @@
 <script>
 	import { onDestroy } from "svelte";
     import { putDeck, deleteDeck } from "$lib/requests.js";
+    import viewStore from "$lib/stores/viewStore.js";
     import deckStore from "$lib/stores/deckStore.js";
     export let deck;
 
@@ -47,6 +48,7 @@
             // Remove deck on server and in store
             await deleteDeck(deck);
             deckStore.update(decks => decks.filter(e => e.id !== deck.id));
+            viewStore.reset();
         }
     }
 

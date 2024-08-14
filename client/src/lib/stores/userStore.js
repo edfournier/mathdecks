@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 
-// Object containing user data
-export const store = writable({});
+// Stores object containing user data
+export const userStore = writable({});
 
-export default store;
+export default userStore;
