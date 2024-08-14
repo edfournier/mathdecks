@@ -41,10 +41,13 @@
         }
     }
 
-    async function scrapDeck() {
-        // Remove deck on server
-        await deleteDeck(deck);
-        deckStore.update(decks => decks.filter(e => e.id !== deck.id));
+    async function trashDeck() {
+        const ok = confirm("Warning: You are about to delete this deck. This cannot be undone.");
+        if (ok) {
+            // Remove deck on server and in store
+            await deleteDeck(deck);
+            deckStore.update(decks => decks.filter(e => e.id !== deck.id));
+        }
     }
 
     function addCard() {
@@ -87,9 +90,9 @@
             {/each}
         </tbody>
     </table>
-    <button on:click={addCard}>Add Card</button>
-    <button on:click={saveDeck}>Save Deck</button>
-    <button on:click={scrapDeck}>Scrap Deck</button>
+    <button on:click={addCard}>Add</button>
+    <button on:click={saveDeck}>Save</button>
+    <button on:click={trashDeck}>Trash</button>
 </div>
 
 <style>
