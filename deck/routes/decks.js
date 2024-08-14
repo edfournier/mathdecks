@@ -8,7 +8,9 @@ router.get("/all", withAuth, async (req, res, next) => {
     try {
         // Find all decks tied to the user
         const decks = await Deck.find({ userId: req.user.id })
-        res.status(200).json({ decks });
+        res.status(200).json(
+            decks.map(deck => deck.toObject())
+        );
     }
     catch (err) {
         next(err);
@@ -25,7 +27,7 @@ router.get("/:id", withAuth, async (req, res, next) => {
         if (!deck) {
             return res.status(404).json({ error: "Deck not found" });
         }
-        res.status(200).json(deck);
+        res.status(200).json(deck.toObject());
     }
     catch (err) {
         next(err);
@@ -40,7 +42,7 @@ router.post("/", withAuth, async (req, res, next) => {
             ...req.body
         });
         await deck.save();
-        res.status(200).json({ ...deck.toObject() });
+        res.status(200).json(deck.toObject());
     }
     catch (err) {
         next(err);
@@ -58,7 +60,7 @@ router.put("/:id", withAuth, async (req, res, next) => {
         if (!deck) {
             return res.status(404).json({ error: "Deck not found" });
         }
-        res.status(200).json({ ...deck.toObject() });
+        res.status(200).json(deck.toObject());
     }
     catch (err) {
         next(err);

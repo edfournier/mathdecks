@@ -1,32 +1,54 @@
 <script>
     import { goto } from "$app/navigation";
+    import { saveToken } from "$lib/token.js";
 
     let username = "";
     let password = "";
-    let alert = "";
+    let alert = null;
+    let loginMode = true; 
 
     async function login() {
         try {
             // Hit token endpoint with credentials
-            const res = await fetch("http://localhost:3000/token", {
+            const res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/token`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
+            });
+            const json = await res.json();
+
+            if (!res.ok) {
+                throw new Error(json.error);
+            } else {
+                // Save token and redirect to dashboard
+                saveToken(json.token);
+                goto("/");
+            }
+        } catch (err) {
+            alert = { error: true, message: err.message };
+        }
+    }
+
+    async function signup() {
+        try {
+            // Hit create user endpoint
+            const res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
 
-            if (!res.ok) {
-                alert = "Login failed. Bad credentials.";
-            } 
-            else {
-                // Save token and redirect to dashboard
+            if (res.ok) {
+                alert = { error: false, message: "Accounted created! Please login."};
+                username = "";
+                password = "";
+                loginMode = true; 
+            } else {
                 const json = await res.json();
-                localStorage.setItem("token", JSON.stringify(json.token));
-                goto("/");
+                throw new Error(json.error);
             }
-        } 
-        catch (err) {
-            console.error(`Login error: ${err}`);
-            alert = "An error occurred. Please try again.";
+        } catch (err) {
+            alert = { error: true, message: err.message };
         }
     }
 </script>
@@ -34,13 +56,16 @@
 <div class="login-container">
     <h1>Mathdecks</h1>
     {#if alert}
-        <p>{alert}</p>
+        <p class={alert.error ? "error" : "success"}>{alert.message}</p>
     {/if}
-    <form on:submit|preventDefault={login}>
-        <input placeholder="Username" bind:value={username} required />
+    <form on:submit|preventDefault={loginMode ? login : signup}>
+        <input type="text" placeholder="Username" bind:value={username} required />
         <input type="password" placeholder="Password" bind:value={password} required />
-        <button type="submit">Login</button>
+        <button class="submit-button" type="submit">{loginMode ? "Login" : "Signup"}</button>
     </form>
+    <button class="toggle-button" on:click={() => loginMode = !loginMode}>
+        {loginMode ? "Or signup" : "Or login"}
+    </button>
 </div>
 
 <style>
@@ -82,18 +107,35 @@
         color: white;
         cursor: pointer;
         width: 40%;
+        margin-bottom: 10px;
     }
 
-    button:hover {
+    .submit-button:hover {
         background-color: #8393a1;
     }
 
-    button:active {
+    .submit-button:active {
         transform: scale(0.99);
     }
 
-    p {
+    .error {
         color: red;
         font-size: 16px;
+    }
+
+    .success {
+        color: green;
+        font-size: 16px;
+    }
+
+    .toggle-button {
+        font-size: 14px;
+        color: #283142;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        margin: 0px;
+        padding: 0px;
     }
 </style>

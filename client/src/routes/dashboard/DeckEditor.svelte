@@ -1,6 +1,7 @@
 <script>
 	import { onDestroy } from "svelte";
-    import deckStore from "$lib/deckStore.js";
+    import { getToken } from "$lib/token.js";
+    import deckStore from "$lib/stores/deckStore.js";
     export let deck;
 
     // Clone otherwise card.front/card.back changes would percolate before saving
@@ -13,21 +14,40 @@
 
     async function save() {
         if (changed) {
-            // TODO: backend call
+            // Send changes to backend
+            const token = getToken();
+            const res = await fetch(`${import.meta.env.VITE_DECK_SERVICE_URL}/decks/${deck.id}`, {
+                method: "PUT", 
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(deck)
+            });
+            const json = await res.json();
+            if (!res.ok) {
+                console.error(json.error);
+                return timestamp = "Save failed. Please try again.";
+            }
+
+            // Update store
             deckStore.update(decks => {
-                decks[deck.id] = deck;
+                const index = decks.findIndex(deck => deck.id === json.id);
+                decks[index] = json;
                 return decks;
             });
             changed = false;
         }
-        // Timestamp last save
-        const time = new Intl.DateTimeFormat("default", {
-            hour12: true,
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric"
-        }).format(new Date());
-        timestamp = `Last saved at: ${time}`;
+
+        // Timestamp last save attempt
+        timestamp = `Last saved at: ${
+            new Intl.DateTimeFormat("default", {
+                hour12: true,
+                hour: "numeric",
+                minute: "numeric",
+                second: "numeric"
+            }).format(new Date())
+        }`;
     }
 
     function add() {

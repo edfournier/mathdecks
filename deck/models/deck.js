@@ -10,6 +10,14 @@ const deckSchema = new mongoose.Schema({
     name: String,
     cards: [cardSchema]
 });
+
+deckSchema.set("toObject", {
+    virtuals: true,
+    versionKey: false,
+    transform: (doc, ret) => {
+        delete ret._id;  
+    }
+});
   
 const Deck = mongoose.model("Deck", deckSchema);
 

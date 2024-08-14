@@ -2,20 +2,20 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import keys from "../utils/key-loader.js";
-import { checkCredentials } from "../middleware/validators.js";
+import { bodyHasCredentials } from "../middleware/validators.js";
 import { handleValidationError } from "mathdecks-common/error";
 
 const router = express.Router();
 
-router.post("/", checkCredentials, handleValidationError, async (req, res, next) => {
+router.post("/", bodyHasCredentials, handleValidationError, async (req, res, next) => {
     try {
         // Fetch and verify user
         const user = await User.findOne({ username: req.body.username });
         if (!user) {
-            return res.sendStatus(404);
+            return res.status(404).json({ error: "User not found" });
         }
         if (!user.comparePassword(req.body.password)) {
-            return res.sendStatus(403);
+            return res.status(403).json({ error: "Incorrect password" });
         };
     
         // Construct and sign new JWT

@@ -2,7 +2,7 @@
     import { fly } from "svelte/transition";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
-    import deckStore from "$lib/deckStore.js";
+    import deckStore from "$lib/stores/deckStore.js";
 
     let changing = false;
     let view = null;
@@ -27,7 +27,7 @@
 <div class="dashboard">
     <div class="deck-list">
         <ul>
-            {#each Object.values(decks) as deck}
+            {#each decks as deck}
                 <button 
                     class={`deck-item ${activeDeck.name === deck.name ? "active-deck" : ""}`}
                     on:click={() => changeView(DeckViewer, deck)} 
