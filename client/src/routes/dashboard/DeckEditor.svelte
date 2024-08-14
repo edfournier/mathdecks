@@ -1,69 +1,63 @@
 <script>
 	import { onDestroy } from "svelte";
-    import { getToken } from "$lib/token.js";
+    import { putDeck, deleteDeck } from "$lib/requests.js";
     import deckStore from "$lib/stores/deckStore.js";
     export let deck;
 
     // Clone otherwise card.front/card.back changes would percolate before saving
     deck = structuredClone(deck);
-
-    // Attempt auto-save every 10 seconds
-    const autoSaver = setInterval(save, 10000);
     let changed = false;
     let timestamp = "";
 
-    async function save() {
-        if (changed) {
-            // Send changes to backend
-            const token = getToken();
-            const res = await fetch(`${import.meta.env.VITE_DECK_SERVICE_URL}/decks/${deck.id}`, {
-                method: "PUT", 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify(deck)
-            });
-            const json = await res.json();
-            if (!res.ok) {
-                console.error(json.error);
-                return timestamp = "Save failed. Please try again.";
-            }
-
-            // Update store
-            deckStore.update(decks => {
-                const index = decks.findIndex(deck => deck.id === json.id);
-                decks[index] = json;
-                return decks;
-            });
-            changed = false;
-        }
-
-        // Timestamp last save attempt
-        timestamp = `Last saved at: ${
-            new Intl.DateTimeFormat("default", {
-                hour12: true,
-                hour: "numeric",
-                minute: "numeric",
-                second: "numeric"
-            }).format(new Date())
-        }`;
+    if (deck.cards.length === 0) {
+        deck.cards.push({ front: "", back: "" });
     }
 
-    function add() {
+    async function saveDeck() {
+        try {
+            if (changed) {
+                // Update deck on server and store
+                const updated = await putDeck(deck);
+                deckStore.update(decks => {
+                    const index = decks.findIndex(deck => deck.id === updated.id);
+                    decks[index] = updated;
+                    return decks;
+                });
+                changed = false;
+            }
+
+            // Timestamp last save attempt
+            timestamp = `Last saved at: ${
+                new Intl.DateTimeFormat("default", {
+                    hour12: true,
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric"
+                }).format(new Date())
+            }`;
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function scrapDeck() {
+        // Remove deck on server
+        await deleteDeck(deck);
+        deckStore.update(decks => decks.filter(e => e.id !== deck.id));
+    }
+
+    function addCard() {
         deck.cards = [...deck.cards, { front: "", back: "" }];
         changed = true;
     }
 
-    function remove(target) {
+    function removeCard(target) {
         deck.cards = deck.cards.filter(card => card !== target);
         changed = true;
     }
 
-    onDestroy(async () => {
-        await save();
-        clearInterval(autoSaver);
-    });
+    onDestroy(saveDeck);
 </script>
 
 <div class="editor">
@@ -87,14 +81,15 @@
                         <textarea bind:value={card.back} on:input={() => changed = true}/>
                     </td>
                     <td class="delete-cell">
-                        <div class="delete-button" role="button" tabindex="0" on:keydown={() => remove(card)} on:click={() => remove(card)}>✖</div>
+                        <div class="delete-button" role="button" tabindex="0" on:keydown={() => removeCard(card)} on:click={() => removeCard(card)}>✖</div>
                     </td>
                 </tr>
             {/each}
         </tbody>
     </table>
-    <button on:click={add}>Add</button>
-    <button on:click={save}>Save</button>
+    <button on:click={addCard}>Add Card</button>
+    <button on:click={saveDeck}>Save Deck</button>
+    <button on:click={scrapDeck}>Scrap Deck</button>
 </div>
 
 <style>
@@ -160,8 +155,9 @@
 
     button {
         font: inherit;
-        min-width: 65px;
-        padding: 10px;
+        font-size: 14px;
+        min-width: 80px;
+        padding: 8px;
         border: none;
         border-radius: 4px;
         background-color: #4b647a;
@@ -174,7 +170,7 @@
     }
 
     button:active {
-        transform: scale(0.9);
+        transform: scale(0.95);
     }
 
     .delete-button {

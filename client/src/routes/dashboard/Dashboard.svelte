@@ -3,23 +3,34 @@
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
     import deckStore from "$lib/stores/deckStore.js";
+    import { postNewDeck } from "$lib/requests.js";
 
     let changing = false;
     let view = null;
     let activeDeck = {};
     let decks = [];
 
-    deckStore.subscribe(newDecks => {
-        decks = newDecks;
-    });
+    deckStore.subscribe(newDecks => decks = newDecks);
 
     async function changeView(newView, newDeck) {
-        if (!changing && (view !== newView || activeDeck.name !== newDeck.name)) {
+        if (!changing && (view !== newView || activeDeck.id !== newDeck.id)) {
             changing = true;
             view = newView;
             activeDeck = newDeck;
             // Wait for animation to end
             setTimeout(() => changing = false, 260);
+        }
+    }
+
+    async function createDeck() {
+        try {
+            // Hit API, update store, then open the new deck
+            const deck = await postNewDeck();
+            deckStore.update(decks => [...decks, deck]);
+            changeView(DeckEditor, deck);
+        }
+        catch (err) {
+            console.error(err);
         }
     }
 </script>
@@ -29,14 +40,15 @@
         <ul>
             {#each decks as deck}
                 <button 
-                    class={`deck-item ${activeDeck.name === deck.name ? "active-deck" : ""}`}
+                    class={`deck-item ${activeDeck.id === deck.id ? "active-deck" : ""}`}
                     on:click={() => changeView(DeckViewer, deck)} 
                 >
-                    {deck.name}
+                    {deck.name || "Untitled"}
                     <button class="edit-button" on:click|stopPropagation={() => changeView(DeckEditor, deck)}>✎</button>
                 </button>
             {/each}
         </ul>
+        <button class="new-button" on:click={createDeck}>New</button>
     </div>
     {#if !changing}
         <div class="view" transition:fly={{ x: 500, duration: 250 }}>
@@ -101,11 +113,25 @@
         right: 10px;
     }
 
-    .edit-button:hover {
+    .new-button {
+        font-family: inherit;
+        cursor: pointer;
+        width: 100%;
+        padding: 4px;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 4px;
+        border: 1px solid #4b647a;
+        background: #4b647a;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .new-button:hover, .edit-button:hover {
         background-color: #8393a1;
     }
 
-    .edit-button:active {
-        transform: scale(0.9);
+    .new-button:active, .edit-button:active {
+        transform: scale(0.95);
     }
 </style>

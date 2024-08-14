@@ -22,15 +22,19 @@
 </script>
 
 <div class="viewer-container">
-    <h1>{name}</h1>
-    <div class="card-container {slide}">
-        <Card card={cards[index]} />
-    </div>
-    <div class="nav">
-        <button on:click={back}>←</button>
-        {index + 1}/{cards.length}
-        <button on:click={next}>→</button>
-    </div>
+    {#if deck.cards.length === 0} 
+        <p>This deck has no cards! Add some in the editor.</p>
+    {:else}
+        <h1>{name}</h1>
+        <div class="card-container {slide}">
+            <Card card={cards[index]} />
+        </div>
+        <div class="nav">
+            <button on:click={back}>←</button>
+            {index + 1}/{cards.length}
+            <button on:click={next}>→</button>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -87,6 +91,6 @@
     }
 
     button:active {
-        transform: scale(0.9);
+        transform: scale(0.95);
     }
 </style>

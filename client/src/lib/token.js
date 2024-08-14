@@ -1,11 +1,5 @@
-import { goto } from "$app/navigation";
-
 export function getToken() {
-    const token = JSON.parse(localStorage.getItem("token"));
-    if (!token) {
-        goto("/login");
-    }
-    return token;
+    return JSON.parse(localStorage.getItem("token"));
 }
 
 export function saveToken(token) {

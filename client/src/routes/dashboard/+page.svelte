@@ -1,12 +1,16 @@
 <script>
     import { getToken } from "$lib/token.js";
 	import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
     import Dashboard from "./Dashboard.svelte";
     import deckStore from "$lib/stores/deckStore.js";
     import userStore from "$lib/stores/userStore.js";
 
     onMount(async () => {
         const token = getToken();
+        if (!token) {
+            goto("/login");
+        }
 
         // Populate user store
         let res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users/self`, {

@@ -1,62 +1,41 @@
 <script>
     import { goto } from "$app/navigation";
+    import { postLogin, postNewUser } from "$lib/requests.js";
     import { saveToken } from "$lib/token.js";
 
     let username = "";
     let password = "";
-    let alert = null;
+    let error = "";
     let loginMode = true; 
 
     async function login() {
         try {
-            // Hit token endpoint with credentials
-            const res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/token`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
-            const json = await res.json();
-
-            if (!res.ok) {
-                throw new Error(json.error);
-            } else {
-                // Save token and redirect to dashboard
-                saveToken(json.token);
-                goto("/");
-            }
-        } catch (err) {
-            alert = { error: true, message: err.message };
+            // Login on server then redirect to dashboard
+            const token = await postLogin(username, password);
+            saveToken(token);
+            goto("/dashboard");
+        } 
+        catch (err) {
+            error = err.message;
         }
     }
 
     async function signup() {
         try {
-            // Hit create user endpoint
-            const res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
-            });
-
-            if (res.ok) {
-                alert = { error: false, message: "Accounted created! Please login."};
-                username = "";
-                password = "";
-                loginMode = true; 
-            } else {
-                const json = await res.json();
-                throw new Error(json.error);
-            }
-        } catch (err) {
-            alert = { error: true, message: err.message };
+            // Create user endpoint  on server then login
+            await postNewUser(username, password);
+            await login();
+        } 
+        catch (err) {
+            error = err.message;
         }
     }
 </script>
 
 <div class="login-container">
     <h1>Mathdecks</h1>
-    {#if alert}
-        <p class={alert.error ? "error" : "success"}>{alert.message}</p>
+    {#if error}
+        <p class="error">{error}</p>
     {/if}
     <form on:submit|preventDefault={loginMode ? login : signup}>
         <input type="text" placeholder="Username" bind:value={username} required />
@@ -115,19 +94,14 @@
     }
 
     .submit-button:active {
-        transform: scale(0.99);
+        transform: scale(0.95);
     }
 
     .error {
         color: red;
         font-size: 16px;
     }
-
-    .success {
-        color: green;
-        font-size: 16px;
-    }
-
+    
     .toggle-button {
         font-size: 14px;
         color: #283142;
