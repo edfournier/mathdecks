@@ -14,7 +14,7 @@ TODO: Two units tests per endpoint
 TODO: Ports
 - auth:      3000 
 - deck:      3001
-- game:      3002
+- milestone: 3002
 - event-bus: 4000 (auth will publish user-deleted event)
 
 TODO: Configure CORS properly

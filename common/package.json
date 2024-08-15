@@ -6,7 +6,6 @@
     "./logger": "./lib/logger.js",
     "./auth": "./lib/auth.js"
   },
-  "description": "Common utilities used across Mathdecks services",
   "type": "module",
   "license": "AGPL-version-3.0",
   "private": true,

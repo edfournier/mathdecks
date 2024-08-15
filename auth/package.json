@@ -1,7 +1,6 @@
 {
   "name": "mathdecks-auth",
   "version": "1.0.0",
-  "description": "Mathdecks authentication server",
   "main": "server.js",
   "type": "module",
   "license": "AGPL-version-3.0",
