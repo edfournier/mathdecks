@@ -1,5 +1,5 @@
 <script>
-    import userStore from "$lib/stores/userStore.js";
+    import userStore from "$lib/stores/user-store.js";
     import { wipeToken } from "$lib/token.js";
     import { goto } from "$app/navigation";
 

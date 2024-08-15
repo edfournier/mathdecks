@@ -1,8 +1,8 @@
 <script>
     import { fly } from "svelte/transition";
     import DeckList from "./DeckList.svelte";
-    import deckStore from "$lib/stores/deckStore.js";
-    import viewStore from "$lib/stores/viewStore.js";
+    import deckStore from "$lib/stores/deck-store.js";
+    import viewStore from "$lib/stores/view-store.js";
 
     let decks = [];
     let view = {};

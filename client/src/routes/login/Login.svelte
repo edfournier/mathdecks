@@ -1,6 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
-    import { postLogin, postNewUser } from "$lib/requests/auth.js";
+    import { postLogin, postNewUser } from "$lib/requests/auth-requests.js";
     import { saveToken } from "$lib/token.js";
 
     let username = "";

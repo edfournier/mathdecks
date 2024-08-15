@@ -1,8 +1,8 @@
 <script>
 	import { onDestroy } from "svelte";
-    import { putDeck, deleteDeck } from "$lib/requests/deck.js";
-    import viewStore from "$lib/stores/viewStore.js";
-    import deckStore from "$lib/stores/deckStore.js";
+    import { putDeck, deleteDeck } from "$lib/requests/deck-requests.js";
+    import viewStore from "$lib/stores/view-store.js";
+    import deckStore from "$lib/stores/deck-store.js";
     export let deck;
 
     // Clone otherwise card.front/card.back changes would percolate before saving
