@@ -2,35 +2,31 @@
     import { getToken } from "$lib/token.js";
 	import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+    import { getUser } from "$lib/requests/auth.js";
+    import { getDecks } from "$lib/requests/deck.js";
     import Dashboard from "./Dashboard.svelte";
     import Header from "./Header.svelte";
     import deckStore from "$lib/stores/deckStore.js";
     import userStore from "$lib/stores/userStore.js";
 
     onMount(async () => {
-        const token = getToken();
-        if (!token) {
-            goto("/login");
-        }
+        try {
+            const token = getToken();
+            if (!token) {
+                goto("/login");
+            }
 
-        // Populate user store
-        let res = await fetch(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users/self`, {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        }); 
-        const user = await res.json();
-        userStore.set(user);
-        
-        // Populate deck store
-        res = await fetch(`${import.meta.env.VITE_DECK_SERVICE_URL}/decks/all`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-        const decks = await res.json();
-        deckStore.set(decks);
+            // Populate user store
+            const user = await getUser();
+            userStore.set(user);
+            
+            // Populate deck store
+            const decks = await getDecks();
+            deckStore.set(decks);
+        }
+        catch (err) {
+            console.error(`Failed to initialize dashboard: ${err}`);
+        }
     });
 </script>
 

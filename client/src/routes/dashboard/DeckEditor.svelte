@@ -1,6 +1,6 @@
 <script>
 	import { onDestroy } from "svelte";
-    import { putDeck, deleteDeck } from "$lib/requests.js";
+    import { putDeck, deleteDeck } from "$lib/requests/deck.js";
     import viewStore from "$lib/stores/viewStore.js";
     import deckStore from "$lib/stores/deckStore.js";
     export let deck;
