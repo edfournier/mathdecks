@@ -5,12 +5,13 @@
     import deckStore from "$lib/stores/deck-store.js";
     export let deck;
 
-    // Clone otherwise card.front/card.back changes would percolate before saving
+    // If we don't clone, card.front/card.back changes would percolate before saving
     deck = structuredClone(deck);
     let changed = false;
     let timestamp = "";
 
     if (deck.cards.length === 0) {
+        // Load a filler card to make the UI nicer
         deck.cards.push({ front: "", back: "" });
     }
 

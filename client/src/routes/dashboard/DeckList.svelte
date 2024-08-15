@@ -13,9 +13,9 @@
 
     async function createDeck() {
         try {
-            // Hit API, update store, then open the new deck
             const deck = await postNewDeck();
             deckStore.update(decks => [...decks, deck]);
+            // Open the editor with the new deck
             viewStore.set({ component: DeckEditor, deck });
         }
         catch (err) {

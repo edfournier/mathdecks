@@ -3,6 +3,12 @@ import deckStore from "$lib/stores/deck-store.js";
 import userStore from "$lib/stores/user-store.js";
 import viewStore from "$lib/stores/view-store.js";
 
+/**
+ * Fetch wrapper for making authenticated requests with 'token' in local storage
+ * @param {string} url - a url to fetch
+ * @param options - options for the request
+ * @returns a promise resolving to the response
+ */
 export async function fetchWithAuth(url, options = {}) {
     // Add auth header
     if (!options.headers) {
@@ -15,7 +21,7 @@ export async function fetchWithAuth(url, options = {}) {
     const json = await res.json();
     
     if (!res.ok) {
-        // Redirect to login if token is bad
+        // Reset and redirect to login if token is bad
         if (res.status === 401) {
             console.error(json.error);
             deckStore.reset();

@@ -7,6 +7,7 @@
     let changing = false;
 
     viewStore.subscribe(newView => {
+        // This check prevents changing to the same view
         if (!changing && !(view.component === newView.component && view.deck.id === newView.deck.id)) {
             view = newView;
             changing = true;

@@ -21,7 +21,7 @@
 
     async function signup() {
         try {
-            // Create user endpoint  on server then login
+            // Create user on server then login with it
             await postUser(username, password);
             await login();
         } 
