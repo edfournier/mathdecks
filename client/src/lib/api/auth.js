@@ -1,4 +1,4 @@
-import { fetchWithAuth } from "./fetch-wrapper";
+import { fetchWithAuth } from "./fetch.js";
 
 export async function getUser() {
     return fetchWithAuth(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users/self`); 

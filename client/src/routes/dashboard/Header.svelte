@@ -1,5 +1,7 @@
 <script>
+    import deckStore from "$lib/stores/deck-store.js";
     import userStore from "$lib/stores/user-store.js";
+    import viewStore from "$lib/stores/view-store.js";
     import { goto } from "$app/navigation";
 
     let username = "Eric";
@@ -7,7 +9,11 @@
     userStore.subscribe(user => username = user.username);
 
     function logout() {
+        // Reset data and send to login
         localStorage.removeItem("token");
+        deckStore.reset();
+        userStore.reset();
+        viewStore.reset();
         goto("/login");
     }
 </script>
