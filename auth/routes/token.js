@@ -4,6 +4,7 @@ import User from "../models/user.js";
 import keys from "../utils/key-loader.js";
 import { bodyHasCredentials } from "../middleware/validators.js";
 import { handleValidationError } from "mathdecks-common/error";
+import { withAuth } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router.post("/", bodyHasCredentials, handleValidationError, async (req, res, nex
     catch (err) {
         next(err);
     }
+});
+
+router.get("/validate", withAuth, (req, res) => {
+    res.sendStatus(200);
 });
 
 export default router;

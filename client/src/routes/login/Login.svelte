@@ -1,7 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
-    import { postLogin, postNewUser } from "$lib/requests/auth-requests.js";
-    import { saveToken } from "$lib/token.js";
+    import { postLogin, postUser } from "$lib/api/auth.js";
 
     let username = "";
     let password = "";
@@ -12,7 +11,7 @@
         try {
             // Login on server then redirect to dashboard
             const token = await postLogin(username, password);
-            saveToken(token);
+            localStorage.setItem("token", JSON.stringify(token));
             goto("/dashboard");
         } 
         catch (err) {
@@ -23,7 +22,7 @@
     async function signup() {
         try {
             // Create user endpoint  on server then login
-            await postNewUser(username, password);
+            await postUser(username, password);
             await login();
         } 
         catch (err) {

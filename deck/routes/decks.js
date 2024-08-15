@@ -77,7 +77,7 @@ router.delete("/:id", withAuth, async (req, res, next) => {
         if (result.deletedCount === 0) {
             return res.status(404).json({ error: "Deck not found" });
         }
-        res.sendStatus(200);
+        res.status(200).json({ message: "Deck deleted" });
     }
     catch (err) {
         next(err);

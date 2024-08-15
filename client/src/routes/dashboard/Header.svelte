@@ -1,6 +1,5 @@
 <script>
     import userStore from "$lib/stores/user-store.js";
-    import { wipeToken } from "$lib/token.js";
     import { goto } from "$app/navigation";
 
     let username = "Eric";
@@ -8,7 +7,7 @@
     userStore.subscribe(user => username = user.username);
 
     function logout() {
-        wipeToken();
+        localStorage.removeItem("token");
         goto("/login");
     }
 </script>
