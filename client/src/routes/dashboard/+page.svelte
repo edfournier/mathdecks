@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
     import { goto } from "$app/navigation";
     import Dashboard from "./Dashboard.svelte";
+    import Header from "./Header.svelte";
     import deckStore from "$lib/stores/deckStore.js";
     import userStore from "$lib/stores/userStore.js";
 
@@ -33,5 +34,6 @@
     });
 </script>
 
+<Header />
 <Dashboard />
  
