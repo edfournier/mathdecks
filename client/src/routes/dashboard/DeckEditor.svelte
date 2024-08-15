@@ -38,7 +38,7 @@
             }`;
         }
         catch (err) {
-            console.error(err);
+            console.error(`Failed to save deck: ${err}`);
         }
     }
 

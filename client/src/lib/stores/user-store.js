@@ -1,12 +1,9 @@
 import { writable } from "svelte/store";
 
-const init = { 
-    username: "..." 
-};
-
 // Stores object containing user data
-export const userStore = writable(init);
+export const userStore = writable();
 
-userStore.reset = () => userStore.set(init);
+userStore.reset = () => userStore.set({ username: "" });
+userStore.reset();
 
 export default userStore;

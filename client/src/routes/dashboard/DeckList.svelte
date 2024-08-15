@@ -4,10 +4,11 @@
     import deckStore from "$lib/stores/deck-store.js";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
-    export let decks;
 
+    let decks = [];
     let activeDeck = {};
 
+    deckStore.subscribe(newDecks => decks = newDecks);
     viewStore.subscribe(view => activeDeck = view.deck);
 
     async function createDeck() {
@@ -18,7 +19,7 @@
             viewStore.set({ component: DeckEditor, deck });
         }
         catch (err) {
-            console.error(err);
+            console.error(`Failed to create deck: ${err}`);
         }
     }
 </script>

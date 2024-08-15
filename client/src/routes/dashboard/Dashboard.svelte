@@ -1,14 +1,10 @@
 <script>
     import { fly } from "svelte/transition";
     import DeckList from "./DeckList.svelte";
-    import deckStore from "$lib/stores/deck-store.js";
     import viewStore from "$lib/stores/view-store.js";
 
-    let decks = [];
     let view = {};
     let changing = false;
-
-    deckStore.subscribe(newDecks => decks = newDecks);
 
     viewStore.subscribe(newView => {
         if (!changing && !(view.component === newView.component && view.deck.id === newView.deck.id)) {
@@ -21,7 +17,7 @@
 </script>
 
 <div class="dashboard">
-    <DeckList {decks} />
+    <DeckList />
     {#if !changing}
         <div class="view" transition:fly={{ x: 500, duration: 250 }}>
             <svelte:component this={view.component} deck={view.deck}/>
