@@ -21,15 +21,17 @@ router.get("/all", withAuth, async (req, res, next) => {
 
 router.get("/:id", withAuth, async (req, res, next) => {
     try {
-        // Find specific deck belonging to user
-        const deck = await Deck.findOne({
-            _id: req.params.id,
-            userId: req.user.id
-        });
+        const deck = await Deck.findById(req.params.id);
         if (!deck) {
             return res.status(404).json({ error: "Deck not found" });
         }
-        res.status(200).json(deck.toObject());
+
+        // Return deck if public or if it belongs to the user
+        if (deck.public || deck.userId === req.user.id) {
+            return res.status(200).json(deck.toObject());
+        }
+        return res.status(403).json({ message: "Unauthorized" });
+
     }
     catch (err) {
         next(err);

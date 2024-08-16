@@ -2,16 +2,14 @@ Ports
 - auth:      3000 
 - deck:      3001
 - milestone: 3002
-- event-bus: 4000 (auth will publish user-deleted event)
+- event-bus: 4000
 
 remaining features:
-- delete account page
 - sharing
     - POST route in deck service: adds userId to share list
     - GET route in deck service: checks if userId is on share list, returns deck if it is
     - UI to generate share code in viewer, UI to load share code in list
 
-local database
-scripts: DONE except for tests
+local database (change env)
 docker/compose
-tests
+tests + test scripts

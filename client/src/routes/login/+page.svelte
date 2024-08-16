@@ -89,6 +89,7 @@
     }
 
     .submit-button {
+        outline: none;
         min-width: 40%;
     }
     

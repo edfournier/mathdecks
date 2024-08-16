@@ -8,6 +8,7 @@ const cardSchema = new mongoose.Schema(
 const deckSchema = new mongoose.Schema({
     userId: String,
     name: String,
+    public: Boolean,
     cards: [cardSchema]
 });
 

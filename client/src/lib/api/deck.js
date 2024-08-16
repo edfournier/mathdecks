@@ -15,7 +15,11 @@ export async function postNewDeck() {
     return fetchWithAuth(`${import.meta.env.VITE_DECK_SERVICE_URL}/decks`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: "", cards: []})
+        body: JSON.stringify({ 
+            name: "", 
+            cards: [], 
+            public: false 
+        })
     });
 }
 

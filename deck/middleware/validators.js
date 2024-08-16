@@ -2,6 +2,7 @@ import { body } from "express-validator";
 
 export const bodyHasDeck = [
     body("name", "Missing string 'name' in body").exists().isString(),
+    body("public", "Missing boolean 'public' in body").exists().isBoolean(),
     body("cards", "Missing array 'cards' in body").exists().isArray(),
     body("cards.*").custom(card => {
         if (card === null 

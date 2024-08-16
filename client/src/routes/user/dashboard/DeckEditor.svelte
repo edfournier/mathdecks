@@ -9,6 +9,7 @@
     deck = structuredClone(deck);
     let changed = false;
     let timestamp = "";
+    let copyText = "Copy share code";
 
     if (deck.cards.length === 0) {
         // Load a filler card to make the UI nicer
@@ -16,6 +17,7 @@
     }
 
     async function saveDeck() {
+        console.log(deck.public);
         try {
             if (changed) {
                 // Update deck on server and store
@@ -44,8 +46,7 @@
     }
 
     async function trashDeck() {
-        const ok = confirm("Warning: You are about to delete this deck. This cannot be undone.");
-        if (ok) {
+        if (confirm("Warning: You are about to delete this deck. This cannot be undone.")) {
             // Remove deck on server and in store
             await deleteDeck(deck);
             deckStore.update(decks => decks.filter(e => e.id !== deck.id));
@@ -63,12 +64,25 @@
         changed = true;
     }
 
+    async function copyShareCode() {
+        navigator.clipboard.writeText(deck.id);
+        copyText = "Copied!";
+        setInterval(() => copyText = "Copy share code", 5000);
+    }
+
     onDestroy(saveDeck);
 </script>
 
 <div class="editor">
     <input type="text" bind:value={deck.name} on:input={() => changed = true} placeholder="Deck name" />
     {timestamp}
+    <div class="share-container">
+        <div class="checkbox-container">
+            <input class="checkbox" type="checkbox" bind:checked={deck.public} on:change={() => changed = true} />
+            <span>Public</span>
+        </div>
+        <span class="share-icon" role="button" tabindex="0" on:click={copyShareCode} on:keydown={copyShareCode}>🔗</span> {copyText}
+    </div>
     <table>
         <thead>
             <tr>
@@ -135,22 +149,20 @@
         border: 1px solid #ddd;
         border-collapse: collapse;
         background-color: #f4f4f4;
+        color: #333;
+        text-align: center;
     }
 
     th {
-        color: #333;
         padding-right: 0px;
         padding-top: 25px;
         padding-bottom: 10px;
-        text-align: center;
     }
 
     td {
-        color: #333;
-        padding-left: 20px;
         padding-right: 0px;
+        padding-left: 20px;
         padding-bottom: 20px;
-        text-align: center;
     }
 
     .delete-cell {
@@ -160,8 +172,33 @@
     }
 
     .delete-button {
+        outline: none;
         font-size: 20px;
         margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-left: 3px;
+        margin-bottom: 10px;
+    }
+
+    .share-container {
+        margin-bottom: 16px;
+    }
+
+    .checkbox {
+        margin: 0px;
+        margin-right: 5px;
+        width: 18px;
+        height: 18px;
+        padding: 0px;
+    }
+
+    .share-icon, .checkbox {
+        outline: none;
         cursor: pointer;
     }
 </style>
