@@ -1,29 +1,10 @@
-TODO: Logging
-- Replace console.log with logger
-- Include process ID in all logs
-
-TODO: .env.example template files
-
-TODO: package.json
-- Add author, description, title
-- Remove unused properties
-- Add scripts: test, start, stop, dev (use Snapbook for PM2 and Nodemon examples)
-
-TODO: Two units tests per endpoint
-
-TODO: Ports
+Ports
 - auth:      3000 
 - deck:      3001
 - milestone: 3002
 - event-bus: 4000 (auth will publish user-deleted event)
 
-TODO: Configure CORS properly
-
-TODO: Docker Compose to share environment variables (like service URLs) between services
-
-TODO: Database service with a dockerfile that launches a database server running a MongoDB cluster with desired databases
-
-TODO: Share route in deck service
+Share route in deck service
 - Share route to add
     - Sharer POSTS username to add 
     - Look up username to get ID
@@ -33,4 +14,11 @@ TODO: Share route in deck service
     - Checks if user id is on share list
     - Returns deck if it is
 
-- TODO: Option to make deck public
+validators
+local database
+add scripts: test, start, stop, dev (use Snapbook for PM2 and Nodemon examples)
+docker/compose
+delete account
+tests
+streak
+check no console.log

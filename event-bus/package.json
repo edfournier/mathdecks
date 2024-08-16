@@ -1,5 +1,5 @@
 {
-    "name": "mathdecks-game",
+    "name": "mathdecks-event-bus",
     "version": "1.0.0",
     "main": "server.js",
     "type": "module",
@@ -17,9 +17,9 @@
       "cors": "^2.8.5",
       "dotenv": "^16.4.5",
       "express": "^4.19.2",
+      "express-validator": "^7.1.0",
       "helmet": "^7.1.0",
       "mathdecks-common": "file:../common",
-      "mongoose": "^8.5.2",
       "morgan": "^1.10.0",
       "winston": "^3.13.1"
     },

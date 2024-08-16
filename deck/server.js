@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import decksRouter from "./routes/decks.js";
+import eventsRouter from "./routes/events.js";
 import logger from "mathdecks-common/logger";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -18,9 +19,8 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan("tiny"));
 app.use(express.json());
-
 app.use("/decks", decksRouter);
-
+app.use("/events", eventsRouter);
 app.use(errorHandler);
 
 app.listen(port, () => {

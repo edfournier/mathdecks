@@ -2,6 +2,9 @@ import jwt from "jsonwebtoken";
 
 const keys = {};
 
+/**
+ * Route-level middleware that verifies JWTs issued by the auth service and stored on the request header
+ */
 export async function withAuth(req, res, next) {
     try {
         // Parse token from header
@@ -41,7 +44,6 @@ export async function withAuth(req, res, next) {
         catch {
             return res.status(401).json({ error: "Invalid token" });
         }
-
         next(); 
     }
     catch (err) {

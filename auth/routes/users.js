@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/", bodyHasCredentials, handleValidationError, async (req, res, next) => {
     try {
-        // Check for duplicate
+        // Prevent duplicate usernames
         if (await User.findOne({ username: req.body.username })) {
             return res.status(400).json({ error: "Username already registered" });
         }
@@ -26,7 +26,7 @@ router.post("/", bodyHasCredentials, handleValidationError, async (req, res, nex
 
 router.get("/self", withAuth, async (req, res, next) => {
     try {
-        // Get given user
+        // Get the currently logged in user
         const user = await User.findOne({ username: req.user.username });
         if (!user) {
             return res.status(400).json({ error: "User not found" });
@@ -38,18 +38,26 @@ router.get("/self", withAuth, async (req, res, next) => {
     }
 });
 
-router.delete("/:username", withAuth, async (req, res, next) => {
+router.delete("/", withAuth, async (req, res, next) => {
     try {
-        // Check username matches route
-        if (req.user.username !== req.params.username) {
-            return res.status(403).json({ error: "User not authorized" });
-        }
-        const result = await User.deleteOne({ username: req.user.username });
+        const result = await User.deleteOne({ _id: req.user.id });
         if (result.deletedCount === 0) {
-            return res.status(404).json({ errro: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
-        res.sendStatus(200);
-        // TODO: Publish "delete-user" event to event bus
+
+        // Publish "delete-user" event to event bus
+        fetch(`${process.env.EVENT_BUS_SERVICE_URL}/events`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                type: "delete-user",
+                data: {
+                    userId: req.user.id
+                }
+            })
+        }); 
+
+        res.status(200).send({ message: "OK" });
     }
     catch (err) {
         next(err);

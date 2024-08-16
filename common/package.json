@@ -4,7 +4,8 @@
   "exports": {
     "./error": "./lib/error.js",
     "./logger": "./lib/logger.js",
-    "./auth": "./lib/auth.js"
+    "./auth": "./lib/auth.js",
+    "./event": "./lib/event.js"
   },
   "type": "module",
   "license": "AGPL-version-3.0",
