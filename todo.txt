@@ -1,9 +1,0 @@
-Ports
-- auth:      3000 
-- deck:      3001
-- milestone: 3002
-- event-bus: 4000
-
-local database (change env)
-docker/compose
-tests + test scripts

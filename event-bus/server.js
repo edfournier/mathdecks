@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import eventsRouter from "./routes/events.js";
-import logger from "mathdecks-common/logger";
+import logger from "./utils/logger.js";
 import cors from "cors";
 import "dotenv/config";
 

@@ -1,7 +1,7 @@
 import express from "express";
-import { eventHandler } from "mathdecks-common/event";
+import { eventHandler } from "../utils/event.js";
 import Deck from "../models/deck.js";
-import logger from "mathdecks-common/logger";
+import logger from "../utils/logger.js";
 
 const router = express.Router();
 

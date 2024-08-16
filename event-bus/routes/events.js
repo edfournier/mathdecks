@@ -1,5 +1,5 @@
 import express from "express";
-import logger from "mathdecks-common/logger";
+import logger from "../utils/logger.js";
 import "dotenv/config";
 
 const router = express.Router();

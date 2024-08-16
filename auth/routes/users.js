@@ -2,7 +2,7 @@ import express from "express";
 import User from "../models/user.js";
 import { bodyHasCredentials } from "../middleware/validators.js";
 import { withAuth } from "../middleware/auth.js";
-import { handleValidationError } from "mathdecks-common/error";
+import { handleValidationError } from "../utils/error.js";
 
 const router = express.Router();
 

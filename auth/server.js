@@ -4,10 +4,10 @@ import helmet from "helmet";
 import keysRouter from "./routes/keys.js";
 import usersRouter from "./routes/users.js";
 import tokenRouter from "./routes/token.js";
-import logger from "mathdecks-common/logger";
+import logger from "./utils/logger.js";
 import mongoose from "mongoose";
 import cors from "cors";
-import { errorHandler } from "mathdecks-common/error";
+import { errorHandler } from "./utils/error.js";
 import "dotenv/config";
 
 await mongoose.connect(process.env.MONGODB_URI);

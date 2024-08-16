@@ -1,6 +1,6 @@
 import express from "express";
 import Record from "../models/record.js";
-import { withAuth } from "mathdecks-common/auth"
+import { withAuth } from "../utils/auth.js"
 
 const router = express.Router();
 

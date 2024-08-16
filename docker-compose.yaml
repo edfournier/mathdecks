@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "5173:5173"
+
+  database:
+    build:
+      context: ./database
+    volumes:
+      - mongodb:/data/db
+    env_file:
+      - ./database/.env
+    healthcheck:
+      test: "mongo --eval 'db.adminCommand('ping').ok'"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth:
+    build:
+      context: ./auth
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+
+  deck:
+    build:
+      context: ./deck
+    ports:
+      - "3001:3001"
+    depends_on:
+      - database
+
+  milestone:
+    build:
+      context: ./milestone
+    ports:
+      - "3002:3002"
+    depends_on:
+      - database
+
+  event-bus:
+    build:
+      context: ./event-bus
+
+volumes:
+  mongodb:

@@ -4,11 +4,17 @@
     import { onMount } from "svelte";
     import { getUser } from "$lib/api/auth.js";
     import { getDecks } from "$lib/api/deck.js";
+    import { goto } from "$app/navigation";
     import Header from "./Header.svelte";
 
     onMount(async () => {
         try {
-            // Attempt to load user context, otherwise boot to login
+            const token = JSON.parse(localStorage.getItem("token"));
+            console.log(token);
+            if (!token) {
+                return goto("/login");
+            }
+
             const user = await getUser();
             userStore.set(user);
             

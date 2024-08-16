@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import keys from "../utils/key-loader.js";
 import { bodyHasCredentials } from "../middleware/validators.js";
-import { handleValidationError } from "mathdecks-common/error";
+import { handleValidationError } from "../utils/error.js";
 import { withAuth } from "../middleware/auth.js";
 
 const router = express.Router();

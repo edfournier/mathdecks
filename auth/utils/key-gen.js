@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import logger from "mathdecks-common/logger";
+import logger from "../utils/logger.js";
 
 /**
  * Generates a new RSA256 key pair, and writes the pair to disk
