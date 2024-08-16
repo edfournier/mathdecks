@@ -1,5 +1,5 @@
 <script>
-    import { postNewDeck } from "$lib/api/deck.js";
+    import { postNewDeck, getDeck } from "$lib/api/deck.js";
     import viewStore from "$lib/stores/view.js";
     import deckStore from "$lib/stores/deck.js";
     import DeckEditor from "./DeckEditor.svelte";
@@ -7,6 +7,8 @@
 
     let decks = [];
     let activeDeck = {};
+    let shareCode = "";
+    let shareError = "";
 
     deckStore.subscribe(newDecks => decks = newDecks);
     viewStore.subscribe(view => activeDeck = view.deck);
@@ -20,6 +22,21 @@
         }
         catch (err) {
             console.error(`Failed to create deck: ${err}`);
+        }
+    }
+
+    async function viewSharedDeck() {
+        try {
+            const deck = await getDeck(shareCode);
+            viewStore.set({ component: DeckViewer, deck });
+            shareError = "";
+        }
+        catch (err) {
+            console.error(`Failed to fetch shared deck: ${err}`);
+            if (activeDeck.id === shareCode) {
+                viewStore.reset();
+            }
+            shareError = err.status === 403 ? "Deck is private" : "Issue loading shared deck";
         }
     }
 </script>
@@ -37,6 +54,13 @@
         {/each}
     </ul>
     <button class="new-button" on:click={createDeck}>New</button>
+    <div class="share-container">
+        <input type="text" bind:value={shareCode} placeholder="Or enter a share code" />
+        <button class="view-button" on:click={viewSharedDeck}>View</button>
+    </div>
+    {#if shareError} 
+        <span class="share-error">{shareError}</span>
+    {/if}
 </div>
 
 <style>
@@ -80,8 +104,35 @@
     }
 
     .new-button {
-        width: 100%;
+        width: 295px;
         padding: 6px;
         margin-top: 10px;
+    }
+
+    .share-container {
+        margin-top: 14px;
+        display: flex;         
+        align-items: center;   
+        margin-bottom: 6px; 
+    }
+
+    input[type="text"] {
+        font-family: inherit;
+        font-size: 14px;
+        padding: 6px;
+        width: 215px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .view-button {
+        padding: 6px;
+        min-width: 60px;
+        margin-left: 5px;
+    }
+
+    .share-error {
+        color: red;
     }
 </style>

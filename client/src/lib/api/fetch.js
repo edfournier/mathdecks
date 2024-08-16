@@ -19,11 +19,13 @@ export async function fetchWithAuth(url, options = {}) {
     
     if (!res.ok) {
         // Reset and redirect to login if token is bad
+        const error = new Error(json.error || "Bad response");
+        error.status = res.status;
         if (res.status === 401) {
             console.error(json.error);
             logout();
         }
-        throw new Error(json.error || "Bad response");
+        throw error;
     }
     return json;
 }

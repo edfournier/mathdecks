@@ -8,6 +8,14 @@ export async function getDecks() {
 }
 
 /**
+ * @param {string} id - the deck's id
+ * @returns a promise resolving to the deck
+ */
+export async function getDeck(id) {
+    return fetchWithAuth(`${import.meta.env.VITE_DECK_SERVICE_URL}/decks/${id}`);
+}
+
+/**
  * Creates an empty deck
  * @returns a promise resolving to the new deck if successful
  */

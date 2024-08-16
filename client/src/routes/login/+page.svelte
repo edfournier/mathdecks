@@ -89,11 +89,11 @@
     }
 
     .submit-button {
-        outline: none;
         min-width: 40%;
     }
     
     .toggle-button {
+        outline: none;
         color: #283142;
         background: none;
         text-decoration: underline;
