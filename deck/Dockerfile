@@ -5,6 +5,7 @@ FROM node
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN npm install -g pm2
 COPY . .
 EXPOSE 3001
-CMD [ "node", "server.js" ]
+CMD ["pm2-runtime", "start", "server.js", "--name", "deck", "-i", "5"]
