@@ -1,6 +1,5 @@
 <script>
     import { fly } from "svelte/transition";
-    import { onMount } from "svelte";
     import DeckList from "./DeckList.svelte";
     import viewStore from "$lib/stores/view.js";
 
@@ -13,10 +12,6 @@
             changing = true;
             setTimeout(() => changing = false, 260);
         }
-    });
-
-    onMount(async () => {
-
     });
 </script>
 
