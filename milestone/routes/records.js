@@ -23,13 +23,17 @@ router.get("/daily", withAuth, async (req, res, next) => {
         }
         else {
             const stamp = new Date(record.stamp);
+            const diff = (now - stamp) / 86400000;  // 1 day = 86400000 ms
 
-            // Extend streak: 1 day = 86400000 ms
-            if ((now - stamp) / 86400000 === 1) {
+            // Extend or reset streak
+            if (diff === 1) {
                 record.streak++;
             }
+            if (diff > 1) {
+                record.streak = 1;
+            }
             // Increment tally
-            if (now > stamp) {
+            if (diff > 0) {
                 record.tally++;
                 record.stamp = now.toISOString();
                 await record.save();

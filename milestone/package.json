@@ -11,7 +11,8 @@
     },
     "scripts": {
       "dev": "nodemon server.js",
-      "test": ""
+      "start": "pm2 start server.js --name milestone -i 5",
+      "stop": "pm2 delete milestone"
     },
     "dependencies": {
       "cors": "^2.8.5",

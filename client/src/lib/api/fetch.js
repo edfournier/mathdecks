@@ -1,7 +1,4 @@
-import { goto } from "$app/navigation";
-import deckStore from "$lib/stores/deck-store.js";
-import userStore from "$lib/stores/user-store.js";
-import viewStore from "$lib/stores/view-store.js";
+import { logout } from "../logout.js";
 
 /**
  * Fetch wrapper for making authenticated requests with 'token' in local storage
@@ -24,11 +21,7 @@ export async function fetchWithAuth(url, options = {}) {
         // Reset and redirect to login if token is bad
         if (res.status === 401) {
             console.error(json.error);
-            deckStore.reset();
-            userStore.reset();
-            viewStore.reset();
-            localStorage.removeItem("token");
-            goto("login");
+            logout();
         }
         throw new Error(json.error || "Bad response");
     }

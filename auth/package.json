@@ -11,7 +11,8 @@
   },
   "scripts": {
     "dev": "nodemon server.js",
-    "test": ""
+    "start": "pm2 start server.js --name auth -i 1",
+    "stop": "pm2 delete auth"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
