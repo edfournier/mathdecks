@@ -1,6 +1,6 @@
 import express from "express";
 import Record from "../models/record.js";
-import { withAuth } from "../utils/auth.js"
+import { withAuth } from "../middleware/auth.js"
 
 const router = express.Router();
 

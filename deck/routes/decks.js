@@ -1,8 +1,8 @@
 import express from "express";
 import Deck from "../models/deck.js";
-import { withAuth } from "../utils/auth.js";
+import { withAuth } from "../middleware/auth.js";
 import { bodyHasDeck } from "../middleware/validators.js";
-import { handleValidationError } from "../utils/error.js";
+import { handleValidationError } from "../middleware/error.js";
 
 const router = express.Router();
 

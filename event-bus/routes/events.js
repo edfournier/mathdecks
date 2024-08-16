@@ -12,23 +12,29 @@ for (let key in process.env) {
     }
 }
 
-router.post("/", async (req, res) => {
-    // Publish event to all subscribers
-    const results = await Promise.allSettled(urls.map(url => {
-        return fetch(`${url}/events`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(req.body)
-        });
-    }));
+router.post("/", async (req, res, next) => {
+    try {
+        // Publish event to all subscribers
+        const results = await Promise.allSettled(urls.map(url => {
+            return fetch(`${url}/events`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(req.body)
+            });
+        }));
 
-    // Check errors
-    results.forEach((result, i) => {
-        if (result.status === "rejected") {
-            logger.error(`Error publishing to ${urls[i]}`, result.reason);
-        }
-    });
-    res.send({ message: "OK" });
+        // Check errors
+        results.forEach((result, i) => {
+            if (result.status === "rejected") {
+                logger.error(`Error publishing to ${urls[i]}`, result.reason);
+            }
+        });
+        res.send({ message: "OK" });
+    }
+    catch (err) {
+        next(err);
+    }
+
 });
 
 export default router;

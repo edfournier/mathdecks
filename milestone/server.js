@@ -6,7 +6,7 @@ import eventsRouter from "./routes/events.js";
 import logger from "./utils/logger.js";
 import mongoose from "mongoose";
 import cors from "cors";
-import { errorHandler } from "./utils/error.js";
+import { errorHandler } from "./middleware/error.js";
 import "dotenv/config";
 
 await mongoose.connect(process.env.MONGODB_URI);
