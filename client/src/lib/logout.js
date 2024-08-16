@@ -1,7 +1,7 @@
 import { goto } from "$app/navigation";
-import deckStore from "$lib/stores/deck-store.js";
-import userStore from "$lib/stores/user-store.js";
-import viewStore from "$lib/stores/view-store.js";
+import deckStore from "$lib/stores/deck.js";
+import userStore from "$lib/stores/user.js";
+import viewStore from "$lib/stores/view.js";
 
 /**
  * Preforms all clean-up tasks needed on log out and redirects to login

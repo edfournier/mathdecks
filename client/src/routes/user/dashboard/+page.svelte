@@ -2,7 +2,7 @@
     import { fly } from "svelte/transition";
     import { onMount } from "svelte";
     import DeckList from "./DeckList.svelte";
-    import viewStore from "$lib/stores/view-store.js";
+    import viewStore from "$lib/stores/view.js";
 
     let view = {};
     let changing = false;

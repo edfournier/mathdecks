@@ -1,6 +1,6 @@
 <script>
-    import deckStore from "$lib/stores/deck-store.js";
-    import userStore from "$lib/stores/user-store.js";
+    import deckStore from "$lib/stores/deck.js";
+    import userStore from "$lib/stores/user.js";
     import { onMount } from "svelte";
     import { getUser } from "$lib/api/auth.js";
     import { getDecks } from "$lib/api/deck.js";

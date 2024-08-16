@@ -1,5 +1,5 @@
 <script>
-    import userStore from "$lib/stores/user-store.js";
+    import userStore from "$lib/stores/user.js";
     import { logout } from "$lib/logout.js";
     import { getRecord } from "$lib/api/milestone.js";
 	import { onMount } from "svelte";

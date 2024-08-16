@@ -2,7 +2,7 @@
     import { logout } from "$lib/logout.js";
     import { goto } from "$app/navigation";
     import { deleteUser } from "$lib/api/auth.js";
-    import userStore from "$lib/stores/user-store.js";
+    import userStore from "$lib/stores/user.js";
 
     let user = {};
 

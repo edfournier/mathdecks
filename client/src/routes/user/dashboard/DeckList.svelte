@@ -1,7 +1,7 @@
 <script>
     import { postNewDeck } from "$lib/api/deck.js";
-    import viewStore from "$lib/stores/view-store.js";
-    import deckStore from "$lib/stores/deck-store.js";
+    import viewStore from "$lib/stores/view.js";
+    import deckStore from "$lib/stores/deck.js";
     import DeckEditor from "./DeckEditor.svelte";
     import DeckViewer from "./DeckViewer.svelte";
 
