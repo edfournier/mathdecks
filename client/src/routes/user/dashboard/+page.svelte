@@ -1,5 +1,6 @@
 <script>
     import { fly } from "svelte/transition";
+    import { onMount } from "svelte";
     import DeckList from "./DeckList.svelte";
     import viewStore from "$lib/stores/view-store.js";
 
@@ -7,34 +8,43 @@
     let changing = false;
 
     viewStore.subscribe(newView => {
-        // This check prevents changing to the same view
         if (!changing && !(view.component === newView.component && view.deck.id === newView.deck.id)) {
             view = newView;
             changing = true;
-            // Wait for animation to end
             setTimeout(() => changing = false, 260);
         }
+    });
+
+    onMount(async () => {
+
     });
 </script>
 
 <div class="dashboard">
-    <DeckList />
-    {#if !changing}
-        <div class="view" transition:fly={{ x: 500, duration: 250 }}>
-            <svelte:component this={view.component} deck={view.deck}/>
-        </div>
-    {/if}
+    <div class="main-content">
+        <DeckList />
+        {#if !changing}
+            <div class="view" transition:fly={{ x: 500, duration: 250 }}>
+                <svelte:component this={view.component} deck={view.deck}/>
+            </div>
+        {/if}
+    </div>
 </div>
 
 <style>
     .dashboard {
         display: flex;
-        width: 100%;
-        height: 100vh;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .main-content {
+        display: flex;
+        flex: 1;
     }
 
     .view {
         flex: 1;
-        padding: 10px;
+        overflow: auto;
     }
 </style>

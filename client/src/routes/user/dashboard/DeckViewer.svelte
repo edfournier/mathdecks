@@ -77,20 +77,9 @@
     }
 
     button {
-        background-color: #4b647a;
-        border: none;
-        border-radius: 4px;
-        padding: 10px;
+        min-width: 50px;
+        height: 50px;
         font-size: 24px;
-        color: white;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #8393a1;
-    }
-
-    button:active {
-        transform: scale(0.95);
+        padding-bottom: 16px;
     }
 </style>

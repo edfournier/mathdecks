@@ -13,11 +13,11 @@ router.post("/", bodyHasCredentials, handleValidationError, async (req, res, nex
             return res.status(400).json({ error: "Username already registered" });
         }
         const user = new User({ 
-            username: req.body.username, 
-            password: req.body.password
+            created: new Date().toISOString(),
+            ...req.body
         });
         await user.save();
-        res.status(200).json({ id: user._id, username: user.username });
+        res.status(200).json(user.toObject());
     }
     catch (err) {
         next(err);
@@ -31,7 +31,7 @@ router.get("/self", withAuth, async (req, res, next) => {
         if (!user) {
             return res.status(400).json({ error: "User not found" });
         }
-        res.status(200).json({ id: user._id, username: user.username });
+        res.status(200).json(user.toObject());
     }
     catch (err) {
         next(err);

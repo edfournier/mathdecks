@@ -13,5 +13,5 @@ export function logout() {
     localStorage.removeItem("token");
 
     // Send to login
-    goto("login");
+    goto("/login");
 }

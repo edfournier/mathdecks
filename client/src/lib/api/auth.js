@@ -8,6 +8,13 @@ export async function getUser() {
 }
 
 /**
+ * Permanently deletes the user's account
+ */
+export async function deleteUser() {
+    return fetchWithAuth(`${import.meta.env.VITE_AUTH_SERVICE_URL}/users`, { method: "DELETE" });
+}
+
+/**
  * Creates a new user with the given credentials
  * @param {string} username - the new account's name
  * @param {string} password - a plain-text password 

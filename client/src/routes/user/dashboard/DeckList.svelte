@@ -40,7 +40,6 @@
 </div>
 
 <style>
-    
     .deck-list {
         width: 300px;
         background-color: #f5f5f5;
@@ -74,36 +73,15 @@
     }
 
     .edit-button {
-        background-color: #4b647a;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 8px;
-        font-size: 14px;
-        color: white;
-        cursor: pointer;
+        padding: 5px 4px;
         position: absolute;
         right: 10px;
+        min-width: 30px;
     }
 
     .new-button {
-        font-family: inherit;
-        cursor: pointer;
         width: 100%;
-        padding: 4px;
-        font-size: 14px;
-        text-align: center;
-        border-radius: 4px;
-        border: 1px solid #4b647a;
-        background: #4b647a;
-        color: white;
+        padding: 6px;
         margin-top: 10px;
-    }
-
-    .new-button:hover, .edit-button:hover {
-        background-color: #8393a1;
-    }
-
-    .new-button:active, .edit-button:active {
-        transform: scale(0.95);
     }
 </style>

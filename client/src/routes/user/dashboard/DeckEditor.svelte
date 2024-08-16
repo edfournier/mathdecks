@@ -159,26 +159,6 @@
         padding: 0px;
     }
 
-    button {
-        font: inherit;
-        font-size: 14px;
-        min-width: 80px;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        background-color: #4b647a;
-        color: white;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #8393a1;
-    }
-
-    button:active {
-        transform: scale(0.95);
-    }
-
     .delete-button {
         font-size: 20px;
         margin-bottom: 20px;
