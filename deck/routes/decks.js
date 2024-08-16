@@ -1,6 +1,8 @@
 import express from "express";
 import Deck from "../models/deck.js";
-import { withAuth } from "mathdecks-common/auth"
+import { withAuth } from "mathdecks-common/auth";
+import { bodyHasDeck } from "../middleware/validators.js";
+import { handleValidationError } from "mathdecks-common/error";
 
 const router = express.Router();
 
@@ -34,7 +36,7 @@ router.get("/:id", withAuth, async (req, res, next) => {
     }
 });
 
-router.post("/", withAuth, async (req, res, next) => {
+router.post("/", bodyHasDeck, handleValidationError, withAuth, async (req, res, next) => {
     try {
         // Save given deck under user
         const deck = new Deck({ 
@@ -49,7 +51,7 @@ router.post("/", withAuth, async (req, res, next) => {
     }
 });
 
-router.put("/:id", withAuth, async (req, res, next) => {
+router.put("/:id", bodyHasDeck, handleValidationError, withAuth, async (req, res, next) => {
     try {
         // Find and overwrite deck
         const deck = await Deck.findOneAndUpdate(
