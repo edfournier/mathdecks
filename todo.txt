@@ -14,11 +14,9 @@ Share route in deck service
     - Checks if user id is on share list
     - Returns deck if it is
 
-validators
 local database
-add scripts: test, start, stop, dev (use Snapbook for PM2 and Nodemon examples)
+add scripts: test, start, stop, dev
 docker/compose
 delete account
 tests
 streak
-check no console.log
