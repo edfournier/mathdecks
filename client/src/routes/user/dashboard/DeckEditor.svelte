@@ -17,7 +17,6 @@
     }
 
     async function saveDeck() {
-        console.log(deck.public);
         try {
             if (changed) {
                 // Update deck on server and store
