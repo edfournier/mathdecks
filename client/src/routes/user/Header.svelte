@@ -59,7 +59,7 @@
 
     .record {
         position: relative; 
-        margin-right: 16px;
+        margin-right: 25px;
     }
 
     span {
