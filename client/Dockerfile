@@ -5,7 +5,6 @@ FROM node
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN npm install -g pm2
 COPY . .
 EXPOSE 5173
-CMD ["pm2-runtime", "start", "start.js", "--name", "client", "-i", "1"]
+CMD ["node", "start.js"]
