@@ -5,7 +5,7 @@ Mathdecks is a full-stack web application allowing users to create and share stu
 I set out to create Mathdecks to deepen my understanding of:
 1. Scalable microservice architectures
 2. Containerization and orchestration of Node applications with Docker and Docker Compose
-3. Implementation of authentication servers leveraging JWT
+3. The implementation of authentication servers using JWTs
 
 # Deployment
 Configure each service's `.env` file. Then, at the project's root, run:
